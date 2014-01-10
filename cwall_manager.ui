@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CWallManager</class>
+ <widget class="QMainWindow" name="CWallManager">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Climbingwall manager</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="margin">
+     <number>2</number>
+    </property>
+    <item>
+     <widget class="QMdiArea" name="mdiArea"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuManager">
+    <property name="title">
+     <string>Manager</string>
+    </property>
+    <addaction name="actionManagerDatabase"/>
+    <addaction name="separator"/>
+    <addaction name="actionManagerConfiguration"/>
+    <addaction name="separator"/>
+    <addaction name="actionManagerExit"/>
+   </widget>
+   <widget class="QMenu" name="menuCompetition">
+    <property name="title">
+     <string>Competition</string>
+    </property>
+    <addaction name="actionCompetitionCreate"/>
+    <addaction name="actionCompetitionOpen"/>
+    <addaction name="actionCompetitionProperties"/>
+    <addaction name="actionCompetitionClose"/>
+   </widget>
+   <widget class="QMenu" name="menuReport">
+    <property name="title">
+     <string>Report</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelpAbout"/>
+    <addaction name="separator"/>
+    <addaction name="actionHelpIndex"/>
+    <addaction name="actionHelpContext"/>
+    <addaction name="separator"/>
+    <addaction name="actionHelpRules"/>
+   </widget>
+   <addaction name="menuManager"/>
+   <addaction name="menuCompetition"/>
+   <addaction name="menuReport"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionManagerDatabase">
+   <property name="text">
+    <string>Database</string>
+   </property>
+  </action>
+  <action name="actionManagerConfiguration">
+   <property name="text">
+    <string>Configuration</string>
+   </property>
+  </action>
+  <action name="actionManagerExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionCompetitionCreate">
+   <property name="text">
+    <string>Create</string>
+   </property>
+  </action>
+  <action name="actionCompetitionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionCompetitionProperties">
+   <property name="text">
+    <string>Properties</string>
+   </property>
+  </action>
+  <action name="actionCompetitionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionHelpAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionHelpIndex">
+   <property name="text">
+    <string>Index</string>
+   </property>
+  </action>
+  <action name="actionHelpContext">
+   <property name="text">
+    <string>Context</string>
+   </property>
+  </action>
+  <action name="actionHelpRules">
+   <property name="text">
+    <string>Rules</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

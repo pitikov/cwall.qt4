@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogDatabase</class>
+ <widget class="QDialog" name="DialogDatabase">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>457</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Select database</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../usr/share/icons/default.kde4/16x16/places/network-server-database.png</normaloff>../../../../usr/share/icons/default.kde4/16x16/places/network-server-database.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="frameDbCtrl">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QTreeView" name="treeViewDatabases">
+        <property name="whatsThis">
+         <string>Database list</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayoutDbCtrl">
+        <item>
+         <widget class="QPushButton" name="pushButtonHostAdd">
+          <property name="whatsThis">
+           <string>Add new database host</string>
+          </property>
+          <property name="text">
+           <string>Add host</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonHostdelete">
+          <property name="whatsThis">
+           <string>Delete current database host</string>
+          </property>
+          <property name="text">
+           <string>Delete host</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonDbAdd">
+          <property name="whatsThis">
+           <string>Add database to host</string>
+          </property>
+          <property name="text">
+           <string>Add database</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonDbDelete">
+          <property name="whatsThis">
+           <string>Delete database from host</string>
+          </property>
+          <property name="text">
+           <string>Delete database</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonDbSetDefault">
+          <property name="whatsThis">
+           <string>Set current database default</string>
+          </property>
+          <property name="text">
+           <string>Set default</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonDbTest">
+          <property name="whatsThis">
+           <string>Test database connection</string>
+          </property>
+          <property name="text">
+           <string>Test connection</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonDbRebuild">
+          <property name="whatsThis">
+           <string>Rebuild structure from current database
+WARNING! 
+All data in this database be destructed</string>
+          </property>
+          <property name="text">
+           <string>Rebuild</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutButtons">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonApply">
+       <property name="whatsThis">
+        <string>Save database configuration</string>
+       </property>
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonCancel">
+       <property name="whatsThis">
+        <string>Cancel database configure</string>
+       </property>
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>treeViewDatabases</tabstop>
+  <tabstop>pushButtonHostAdd</tabstop>
+  <tabstop>pushButtonHostdelete</tabstop>
+  <tabstop>pushButtonDbAdd</tabstop>
+  <tabstop>pushButtonDbDelete</tabstop>
+  <tabstop>pushButtonDbSetDefault</tabstop>
+  <tabstop>pushButtonDbTest</tabstop>
+  <tabstop>pushButtonDbRebuild</tabstop>
+  <tabstop>pushButtonCancel</tabstop>
+  <tabstop>pushButtonApply</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButtonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogDatabase</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>405</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>121</x>
+     <y>279</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>treeViewDatabases</sender>
+   <signal>activated(QModelIndex)</signal>
+   <receiver>DialogDatabase</receiver>
+   <slot>indexChanged(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>166</x>
+     <y>135</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonApply</sender>
+   <signal>clicked()</signal>
+   <receiver>DialogDatabase</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>382</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>214</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>indexChanged(QModelIndex)</slot>
+ </slots>
+</ui>
