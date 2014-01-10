@@ -53,6 +53,8 @@ private:
 
   QSqlDatabase dbase;
 
+  QStringList sqlQueryListFromFile();
+
 private slots:
   int exec();
   void indexChanged(QModelIndex index);

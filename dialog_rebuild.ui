@@ -26,13 +26,6 @@
       <item>
        <widget class="QListWidget" name="listWidget"/>
       </item>
-      <item>
-       <widget class="QProgressBar" name="progressBar">
-        <property name="value">
-         <number>0</number>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

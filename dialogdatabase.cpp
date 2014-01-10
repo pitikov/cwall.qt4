@@ -2,8 +2,10 @@
 #include "dialogconfigure.h"
 
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QFile>
 
 #include <QDebug>
 
@@ -293,9 +295,11 @@ void DialogDatabase::databaseTest()
 
 void DialogDatabase::databaseRebuild()
 {
+  // TODO exclude sql worker to private thread;
     QSqlDatabase tgtdb = QSqlDatabase::addDatabase("QMYSQL", "testdb");
 
     QModelIndex db_index = ui->treeViewDatabases->currentIndex();
+	ui_rebuild->listWidget->clear();
     tgtdb.setDatabaseName(model->data(db_index, DbBaseRole).toString());
     tgtdb.setHostName(model->data(db_index.parent(), Qt::DisplayRole).toString());
     tgtdb.setUserName(model->data(db_index, DbUserRole).toString());
@@ -305,21 +309,43 @@ void DialogDatabase::databaseRebuild()
     if (tgtdb.isValid() && tgtdb.open()) {
 
         if (QMessageBox::warning(this, windowTitle(), tr("Rebuild database") + " " + model->data(db_index, Qt::DisplayRole).toString() + "?\n" + tr("WARNING! This operation remove all data in current database."), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes) {
-            // TODO Implict create db structure
             ui_rebuild->pushButtonClose->setDisabled(true);
             dialog_rebuild->setModal(true);
             dialog_rebuild->setWindowFlags(Qt::Dialog | Qt::WindowMaximizeButtonHint );
             dialog_rebuild->show();
             ui_rebuild->listWidget->insertItem(ui_rebuild->listWidget->count() ,new QListWidgetItem(QIcon::fromTheme ("dialog-ok-apply") , tr("Database open success")));
+			ui_rebuild->listWidget->update();
 
-            QStringList tables = tgtdb.tables(QSql::Tables);
-            while (!tables.isEmpty()) {
-                QString tablename = tables.first();
+			for (int id = 0; id < tgtdb.tables(QSql::Tables).count(); id++) {
+			  QStringList tables = tgtdb.tables(QSql::Tables);
+			  while (!tables.isEmpty()) {
+				QString tablename = tables.first();
                 QSqlQuery query = QSqlQuery(tgtdb);
+				query.exec("alter table " + tablename + "disable keys");
                 query.exec("drop table if exists " + tablename);
                 tables.pop_front();
-            }
+			  }
+			}
             ui_rebuild->listWidget->insertItem(ui_rebuild->listWidget->count() ,new QListWidgetItem(QIcon::fromTheme("dialog-ok-apply"), tr("Delete old tables")));
+			ui_rebuild->listWidget->update();
+
+			QStringList sql_core = sqlQueryListFromFile();
+			if (!sql_core.isEmpty()) {
+			  while (!sql_core.isEmpty()) {
+				QString sqlitem = sql_core.first();
+				QSqlQuery query = QSqlQuery(tgtdb);
+				if (query.exec(sqlitem)) {
+				  ui_rebuild->listWidget->insertItem(ui_rebuild->listWidget->count() ,new QListWidgetItem(QIcon::fromTheme("dialog-ok-apply"), sqlitem.split("(").at(0)));
+				  ui_rebuild->listWidget->update();
+				} else {
+				}
+				sql_core.pop_front();
+			  }
+
+			} else {
+			  ui_rebuild->listWidget->insertItem(ui_rebuild->listWidget->count() ,new QListWidgetItem(QIcon::fromTheme("dialog-error"), tr("Error load sql file")));
+			  ui_rebuild->listWidget->update();
+			}
 
             ui_rebuild->pushButtonClose->setEnabled(true);
             tgtdb.close();
@@ -353,5 +379,30 @@ void DialogDatabase::validate_database()
     // TODO validate to correct username and dbase name
     ui_database->pushButtonCreate->setEnabled(is_complite & is_unique);
 }
+
+QStringList DialogDatabase::sqlQueryListFromFile()
+{
+  QStringList list;
+  QString to_commit;
+  // TODO get file name from settings
+  //QFile file(DialogConfigure::cfg()->value("SQL Files", "dbcore", "/usr/share/cwall/sql/schema.mysql.sql").toString());
+  QFile file("/usr/share/cwall/sql/schema.mysql.sql");
+  if (file.open(QIODevice::ReadOnly)) {
+	while (!file.atEnd()) {
+	  QString tempstr = QString::fromLocal8Bit(file.readLine()).simplified();
+	  if (!tempstr.isEmpty() & (tempstr.left(2)!="--")) {
+		to_commit += " " + tempstr;
+		if (tempstr.right(1)==";") {
+		  list << to_commit;
+		  to_commit.clear();
+		}
+	  }
+	}
+	file.close();
+  }
+
+  return list;
+}
+
 
 #include "dialogdatabase.moc"
