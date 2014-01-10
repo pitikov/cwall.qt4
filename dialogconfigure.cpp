@@ -51,6 +51,7 @@ QVariant DialogConfigure::value(QString group, QString key, QVariant default_val
   cfg_->beginGroup(group);
   value = cfg_->value(key, default_value);
   cfg_->endGroup();
+  return value;
 }
 
 QSettings* DialogConfigure::settings()

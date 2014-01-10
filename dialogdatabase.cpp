@@ -353,9 +353,7 @@ void DialogDatabase::databaseRebuild()
     } else {
         QMessageBox::warning(this, windowTitle(), tr("Database") + " " + model->data(db_index, Qt::DisplayRole).toString() + " " + tr("access deny"), QMessageBox::Close, QMessageBox::Close);
     }
-
-
-    QSqlDatabase::removeDatabase("testdb");
+    QSqlDatabase::removeDatabase("tgtdb");
 }
 
 void DialogDatabase::validate_hostname(QString hostname)
@@ -384,9 +382,7 @@ QStringList DialogDatabase::sqlQueryListFromFile()
 {
   QStringList list;
   QString to_commit;
-  // TODO get file name from settings
-  //QFile file(DialogConfigure::cfg()->value("SQL Files", "dbcore", "/usr/share/cwall/sql/schema.mysql.sql").toString());
-  QFile file("/usr/share/cwall/sql/schema.mysql.sql");
+  QFile file(DialogConfigure::cfg()->value("SQL Files", "dbcore", "/usr/share/cwall/sql/schema.mysql.sql").toString());
   if (file.open(QIODevice::ReadOnly)) {
 	while (!file.atEnd()) {
 	  QString tempstr = QString::fromLocal8Bit(file.readLine()).simplified();
