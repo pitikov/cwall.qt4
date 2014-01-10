@@ -6,25 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>334</width>
-    <height>205</height>
+    <width>292</width>
+    <height>188</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Configure</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QFrame" name="frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayoutButtons">
      <item>
       <spacer name="horizontalSpacer">
@@ -44,6 +34,11 @@
        <property name="text">
         <string>Apply</string>
        </property>
+       <property name="icon">
+        <iconset theme="dialog-ok">
+         <normaloff/>
+        </iconset>
+       </property>
       </widget>
      </item>
      <item>
@@ -51,12 +46,173 @@
        <property name="text">
         <string>Cancel</string>
        </property>
+       <property name="icon">
+        <iconset theme="dialog-cancel">
+         <normaloff/>
+        </iconset>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tabFiles">
+      <attribute name="icon">
+       <iconset theme="folder"/>
+      </attribute>
+      <attribute name="title">
+       <string>Files</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>database SQL script</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>lineEditSqlCore</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEditSqlCore"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Competition rules</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>lineEditRules</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QToolButton" name="toolButtonSqlCore">
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document-open">
+           <normaloff/>
+          </iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEditRules"/>
+       </item>
+       <item row="1" column="2">
+        <widget class="QToolButton" name="toolButtonRules">
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document-open">
+           <normaloff/>
+          </iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabRegistration">
+      <attribute name="icon">
+       <iconset theme="view-certificate"/>
+      </attribute>
+      <attribute name="title">
+       <string>Registration</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QFormLayout" name="formLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelOrganization">
+           <property name="text">
+            <string>Organization</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineEditOrganization"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelName">
+           <property name="text">
+            <string>Name</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineEditName"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>email</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="lineEdit_4"/>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="Line" name="line">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="labelSerial">
+           <property name="text">
+            <string>Registration key</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="lineEditSerial"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>lineEditSqlCore</tabstop>
+  <tabstop>toolButtonSqlCore</tabstop>
+  <tabstop>lineEditRules</tabstop>
+  <tabstop>toolButtonRules</tabstop>
+  <tabstop>pushButtonCancel</tabstop>
+  <tabstop>pushButtonApply</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -66,8 +222,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>215</x>
-     <y>151</y>
+     <x>234</x>
+     <y>199</y>
     </hint>
     <hint type="destinationlabel">
      <x>115</x>
@@ -82,8 +238,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>315</x>
-     <y>152</y>
+     <x>328</x>
+     <y>199</y>
     </hint>
     <hint type="destinationlabel">
      <x>270</x>

@@ -156,6 +156,9 @@ All data in this database be destructed</string>
        <property name="text">
         <string>Apply</string>
        </property>
+       <property name="icon">
+        <iconset theme="dialog-ok"/>
+       </property>
       </widget>
      </item>
      <item>
@@ -165,6 +168,9 @@ All data in this database be destructed</string>
        </property>
        <property name="text">
         <string>Cancel</string>
+       </property>
+       <property name="icon">
+        <iconset theme="dialog-cancel"/>
        </property>
       </widget>
      </item>

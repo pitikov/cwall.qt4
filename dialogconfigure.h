@@ -23,6 +23,7 @@ public:
   QVariant value(QString group, QString key, QVariant default_value = QVariant());
   void setValue(QString group, QString key, QVariant value);
   QSettings *settings();
+  bool defaultDatabase( QString *host, QString *base, QString *user, QString* passwd, int *port );
 
 private:
   explicit DialogConfigure(QWidget* parent = 0, Qt::WindowFlags f = 0);

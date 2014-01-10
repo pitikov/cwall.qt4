@@ -59,4 +59,39 @@ QSettings* DialogConfigure::settings()
   return cfg_;
 }
 
+bool DialogConfigure::defaultDatabase(QString* host, QString* base, QString* user, QString* passwd, int* port)
+{
+  QString thost;
+  bool ret = false;
+  int hostcount = settings()->beginReadArray(DbSettings);
+  for (int chost = 0; chost < hostcount; chost++) {
+    settings()->setArrayIndex(chost);
+    thost = settings()->value("hostname", "localhost").toString();
+    
+    int basecount = settings()->beginReadArray(DbItems);
+    
+    for (int cbase = 0; cbase < basecount; cbase++) {
+      settings()->setArrayIndex(cbase);
+      
+      if (settings()->value("is_default", false).toBool()) {
+	*host = thost;
+	*base = settings()->value("database").toString();
+	*user = settings()->value("user").toString();
+	*passwd = settings()->value("password").toString();
+	*port = 3306;
+	
+	ret = true;
+	break;
+      }
+    }
+    
+    settings()->endArray();
+    if (ret) break;
+  }
+  
+  settings()->endArray();
+  
+  return ret;
+}
+
 #include "dialogconfigure.moc"

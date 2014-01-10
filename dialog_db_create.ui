@@ -81,12 +81,18 @@
      <property name="text">
       <string>Create</string>
      </property>
+     <property name="icon">
+      <iconset theme="dialog-ok"/>
+     </property>
     </widget>
    </item>
    <item row="1" column="2">
     <widget class="QPushButton" name="pushButtonCancel">
      <property name="text">
       <string>Cancel</string>
+     </property>
+     <property name="icon">
+      <iconset theme="dialog-cancel"/>
      </property>
     </widget>
    </item>

@@ -37,6 +37,7 @@
      <string>Manager</string>
     </property>
     <addaction name="actionManagerDatabase"/>
+    <addaction name="actionManagerDbConnect"/>
     <addaction name="separator"/>
     <addaction name="actionManagerConfiguration"/>
     <addaction name="separator"/>
@@ -67,65 +68,193 @@
     <addaction name="separator"/>
     <addaction name="actionHelpRules"/>
    </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+   </widget>
    <addaction name="menuManager"/>
    <addaction name="menuCompetition"/>
    <addaction name="menuReport"/>
+   <addaction name="menuWindow"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBarManager">
+   <property name="windowTitle">
+    <string>Competition manager</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionManagerDatabase"/>
+   <addaction name="actionManagerDbConnect"/>
+   <addaction name="separator"/>
+   <addaction name="actionManagerConfiguration"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarCompetition">
+   <property name="windowTitle">
+    <string>Competition</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionCompetitionCreate"/>
+   <addaction name="actionCompetitionOpen"/>
+   <addaction name="actionCompetitionProperties"/>
+   <addaction name="actionCompetitionClose"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarReport">
+   <property name="windowTitle">
+    <string>Report</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QToolBar" name="toolBarHelp">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionHelpAbout"/>
+   <addaction name="separator"/>
+   <addaction name="actionHelpIndex"/>
+   <addaction name="actionHelpContext"/>
+   <addaction name="separator"/>
+   <addaction name="actionHelpRules"/>
+  </widget>
   <action name="actionManagerDatabase">
+   <property name="icon">
+    <iconset theme="network-server-database">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Database</string>
    </property>
   </action>
   <action name="actionManagerConfiguration">
+   <property name="icon">
+    <iconset theme="configure">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Configuration</string>
    </property>
   </action>
   <action name="actionManagerExit">
+   <property name="icon">
+    <iconset theme="application-exit">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
   </action>
   <action name="actionCompetitionCreate">
+   <property name="icon">
+    <iconset theme="document-new">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Create</string>
    </property>
   </action>
   <action name="actionCompetitionOpen">
+   <property name="icon">
+    <iconset theme="document-open">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
   </action>
   <action name="actionCompetitionProperties">
+   <property name="icon">
+    <iconset theme="document-properties">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Properties</string>
    </property>
   </action>
   <action name="actionCompetitionClose">
+   <property name="icon">
+    <iconset theme="document-close">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Close</string>
    </property>
   </action>
   <action name="actionHelpAbout">
+   <property name="icon">
+    <iconset theme="help-about">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>About</string>
    </property>
   </action>
   <action name="actionHelpIndex">
+   <property name="icon">
+    <iconset theme="help-contents">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Index</string>
    </property>
   </action>
   <action name="actionHelpContext">
+   <property name="icon">
+    <iconset theme="help-contextual">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Context</string>
    </property>
   </action>
   <action name="actionHelpRules">
+   <property name="icon">
+    <iconset theme="acroread"/>
+   </property>
    <property name="text">
     <string>Rules</string>
+   </property>
+  </action>
+  <action name="actionManagerDbConnect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="network-connect"/>
+   </property>
+   <property name="text">
+    <string>Connect</string>
    </property>
   </action>
  </widget>

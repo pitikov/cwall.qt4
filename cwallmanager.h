@@ -8,24 +8,33 @@
 #include "dialogconfigure.h"
 
 namespace Ui {
-  class CWallManager;
+	class CWallManager;
 }
 
 class CWallManager : public QMainWindow
 {
-Q_OBJECT
+	Q_OBJECT
 public:
-    explicit CWallManager(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+	explicit CWallManager(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+	~CWallManager();
 
 protected:
-    virtual bool event(QEvent* event);
+	virtual bool event(QEvent* event);
 	void setConnections();
 
-public:
-    virtual ~CWallManager();
-
 	Ui::CWallManager 	*ui;
-	DialogDatabase		*dialogDatabase;
+	DialogDatabase	*dialogDatabase;
+	QString		host;
+	QString		base;
+	QString  	user;
+	QString		passwd;
+	int 			port;
+	QSqlDatabase	cwallbase;
+
+public slots:
+	void db_connect(bool is_connect);
+	void db_cfg_update();
+
 };
 
 #endif // CWALLMANAGER_H
