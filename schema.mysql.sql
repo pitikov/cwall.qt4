@@ -4,12 +4,10 @@ create table `site_user` (
 	`uid` integer primary key auto_increment,
 	`login` varchar(16) not null unique,
 	`pwdhash` varchar(32) not null,
-	`name` varchar(32) not null,
-	`control_question` tinytext not null,
-	`control_request` tinytext not null
+	`name` varchar(32) not null
 ) engine = InnoDb comment 'Site user list (competition juide command)';
-insert into `site_user`    (`login`, `name`, `pwdhash`, `control_question`, `control_request`) values
-('admin', 'Администратор безопастности', md5('siteadmin'), 'shkhara peak hight', '5201');
+insert into `site_user`    (`login`, `name`, `pwdhash`) values
+('admin', 'Администратор безопастности', md5('siteadmin'));
 
 -- create base library tables
 create table `lib_climbdifficalty` (

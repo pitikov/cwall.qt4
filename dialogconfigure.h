@@ -29,6 +29,7 @@ private:
   explicit DialogConfigure(QWidget* parent = 0, Qt::WindowFlags f = 0);
   virtual void accept();
   virtual void reject();
+	int exec();
 
   static DialogConfigure *self_;
   Ui::DialogConfigure *ui;

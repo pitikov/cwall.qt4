@@ -1,9 +1,12 @@
 #include "cwallmanager.h"
 #include <QMessageBox>
 
+#include <QCryptographicHash>
+
 CWallManager::CWallManager(QWidget* parent, Qt::WindowFlags flags)
 : QMainWindow(parent, flags)
 , ui(new Ui::CWallManager)
+, ui_auth(new Ui::DialogAuth)
 , dialogDatabase(new DialogDatabase(this))
 , host(QString())
 , base(QString())
@@ -52,8 +55,33 @@ void CWallManager::db_connect(bool is_connect)
 
 		if (dialogDatabase->validate_dbstruct()) {
 			is_connect = cwallbase.open();
+			if (is_connect) {
+				QDialog dialog_auth;
+				ui_auth->setupUi(&dialog_auth);
+				ui_auth->lineEdit->clear();
+				ui_auth->comboBox->clear();
 
-			// TODO activated objects from database open
+				QSqlQueryModel sql_model_user;
+				sql_model_user.setQuery("select * from site_user", cwallbase);
+
+				for (int uid = 0; uid < sql_model_user.rowCount(); uid++) {
+					ui_auth->comboBox->addItem(sql_model_user.record(uid).value("login").toString(), sql_model_user.record(uid).value("record").toInt());
+				}
+				if (dialog_auth.exec() == QDialog::Accepted) {
+
+					if (QCryptographicHash::hash(ui_auth->lineEdit->text().toLatin1(), QCryptographicHash::Md5).toHex() == sql_model_user.record(ui_auth->comboBox->currentIndex()).value("pwdhash").toString()) {
+
+						// TODO activated objects from database open
+					} else {
+						QMessageBox::warning(this, dialog_auth.windowTitle(), tr("Uncorrect password"));
+						cwallbase.close();
+						is_connect = false;
+					}
+				} else {
+					cwallbase.close();
+					is_connect = false;
+				}
+			}
 		} else {
 			is_connect = false;
 			QMessageBox::critical(this, windowTitle(), tr("Uncorrect or damaged structure in default database") + ": " + user +"@" + base, QMessageBox::Close);
