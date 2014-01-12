@@ -122,6 +122,15 @@ create table `competition` (
 	constraint `fk_competition_main_secretar` foreign key (`main_secretar`) references `site_user` (`uid`) on update cascade on delete restrict
 ) engine = InnoDb comment 'competition list';
 
+create table `competioin_juide` (
+	`id` integer primary key auto_increment,
+	`competition` integer not null comment 'pointer to competition id',
+	`uid` integer not null comment 'pointer to user uid',
+	constraint `fk_competition_juide_cid` foreign key (`competition`) references `competition` (`cid`) on update cascade on delete cascade,
+	constraint `fk_competition_juide_uid` foreign key (`uid`) references `site_user` (`uid`) on update cascade on delete cascade,
+	constraint `uk_competition_juide` unique (`uid`, `competition`)
+) engine = InnoDb comment 'Competition juide team list';
+
 create table `round` (
 	`rid` integer primary key auto_increment comment 'round id',
 	`competition` integer not null comment 'pointer to competition id',

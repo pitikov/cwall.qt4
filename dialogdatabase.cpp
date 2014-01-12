@@ -341,6 +341,9 @@ void DialogDatabase::databaseRebuild()
 						ui_rebuild->listWidget->insertItem(ui_rebuild->listWidget->count() ,new QListWidgetItem(QIcon::fromTheme("dialog-ok-apply"), sqlitem.split("(").at(0)));
 						ui_rebuild->listWidget->update();
 					} else {
+						ui_rebuild->listWidget->insertItem(ui_rebuild->listWidget->count() ,new QListWidgetItem(QIcon::fromTheme("dialog-error"), query.lastError().text()));
+						ui_rebuild->listWidget->update();
+						break;
 					}
 					sql_core.pop_front();
 				}
@@ -352,6 +355,7 @@ void DialogDatabase::databaseRebuild()
 
 			ui_rebuild->pushButtonClose->setEnabled(true);
 			setCursor(Qt::ArrowCursor);
+			ui->treeViewDatabases->setCurrentIndex(model->item(model->rowCount()-1)->index());
 			tgtdb.close();
 		}
 	} else {

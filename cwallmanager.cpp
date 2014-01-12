@@ -1,6 +1,6 @@
 #include "cwallmanager.h"
 #include <QMessageBox>
-#include <qmdisubwindow.h>
+#include <QMdiSubWindow>
 
 #include <QCryptographicHash>
 
@@ -29,6 +29,8 @@ void CWallManager::setConnections()
 	connect(ui->actionManagerConfiguration, SIGNAL(activated()), DialogConfigure::cfg(this), SLOT(exec()));
 	connect(ui->actionManagerDbConnect, SIGNAL(toggled(bool)), this, SLOT(db_connect(bool)));
 	connect(ui->actionManagerExit, SIGNAL(activated()), this, SLOT(close()));
+
+	connect(ui->actionLibrary_static_data, SIGNAL(activated()), this, SLOT(mdi_window_show()));
 
 	connect(dialogDatabase, SIGNAL(accepted()), this, SLOT(db_cfg_update()));
 }
@@ -115,6 +117,25 @@ void CWallManager::db_open_success()
 {
 	// TODO activated objects from database open
 
+}
+
+void CWallManager::mdi_window_show(bool status)
+{
+	if (sender()->objectName() == "actionLibrary_static_data") {
+		QWidget *tgt = findSubWindow("FormLibraryEditor");
+		if ( !tgt ) ui->mdiArea->addSubWindow(new FormLibraryEditor(this))->show();
+		else tgt->showNormal();
+	}
+	// TODO in this point set recieving for add or delete subWindow to mdiArea
+}
+
+QWidget *CWallManager::findSubWindow(QString objectName)
+{
+	for (int id = 0; id < ui->mdiArea->subWindowList().count(); id++) {
+		if (ui->mdiArea->subWindowList().at(id)->widget()->objectName() == objectName)
+			return ui->mdiArea->subWindowList().at(id);
+	}
+	return NULL;
 }
 
 

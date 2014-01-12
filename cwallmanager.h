@@ -26,15 +26,18 @@ public:
 protected:
 	virtual bool event(QEvent* event);
 	void setConnections();
+	QWidget *findSubWindow(QString objectName);
 
 	Ui::CWallManager 	*ui;
 	Ui::DialogAuth	*ui_auth;
 	DialogDatabase	*dialogDatabase;
+	FormLibraryEditor *formLibraryEditor;
 	QString		host;
 	QString		base;
 	QString  	user;
 	QString		passwd;
 	int 			port;
+
 
 	QSqlDatabase	cwallbase;
 
@@ -44,6 +47,8 @@ public slots:
 
 	void db_open_success();
 	void db_close();
+
+	void mdi_window_show(bool status = true);
 
 };
 
