@@ -14,8 +14,7 @@
    <string>Select database</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>../../../../usr/share/icons/default.kde4/16x16/places/network-server-database.png</normaloff>../../../../usr/share/icons/default.kde4/16x16/places/network-server-database.png</iconset>
+   <iconset theme="network-server-database"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -157,7 +156,9 @@ All data in this database be destructed</string>
         <string>Apply</string>
        </property>
        <property name="icon">
-        <iconset theme="dialog-ok"/>
+        <iconset theme="dialog-ok">
+         <normaloff/>
+        </iconset>
        </property>
       </widget>
      </item>
@@ -170,7 +171,9 @@ All data in this database be destructed</string>
         <string>Cancel</string>
        </property>
        <property name="icon">
-        <iconset theme="dialog-cancel"/>
+        <iconset theme="dialog-cancel">
+         <normaloff/>
+        </iconset>
        </property>
       </widget>
      </item>
