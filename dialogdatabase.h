@@ -28,7 +28,7 @@ public:
 
 	void accept();
 	void reject();
-	bool validate_dbstruct( QModelIndex index = QModelIndex() );
+	bool validate_dbstruct( QSqlDatabase *base );
 
 private:
 

@@ -1,4 +1,5 @@
 #include "cwallmanager.h"
+#include "user.h"
 #include <QMessageBox>
 #include <QMdiSubWindow>
 
@@ -55,9 +56,10 @@ void CWallManager::db_connect(bool is_connect)
 		cwallbase.setPassword(passwd);
 		cwallbase.setPort(port);
 
-		if (dialogDatabase->validate_dbstruct()) {
-			is_connect = cwallbase.open();
-			if (is_connect) {
+		is_connect = cwallbase.open();
+		if (is_connect) {
+
+			if (dialogDatabase->validate_dbstruct(&cwallbase)) {
 				QDialog dialog_auth;
 				ui_auth->setupUi(&dialog_auth);
 				ui_auth->lineEdit->clear();
@@ -67,11 +69,12 @@ void CWallManager::db_connect(bool is_connect)
 				sql_model_user.setQuery("select * from site_user", cwallbase);
 
 				for (int uid = 0; uid < sql_model_user.rowCount(); uid++) {
-					ui_auth->comboBox->addItem(sql_model_user.record(uid).value("login").toString(), sql_model_user.record(uid).value("record").toInt());
+					ui_auth->comboBox->addItem(sql_model_user.record(uid).value("login").toString(), sql_model_user.record(uid).value("uid").toInt());
 				}
 				if (dialog_auth.exec() == QDialog::Accepted) {
 
 					if (QCryptographicHash::hash(ui_auth->lineEdit->text().toLatin1(), QCryptographicHash::Md5).toHex() == sql_model_user.record(ui_auth->comboBox->currentIndex()).value("pwdhash").toString()) {
+						User::current(ui_auth->comboBox->itemData(ui_auth->comboBox->currentIndex()).toInt());
 						db_open_success();
 					} else {
 						QMessageBox::warning(this, dialog_auth.windowTitle(), tr("Uncorrect password"));
@@ -82,10 +85,11 @@ void CWallManager::db_connect(bool is_connect)
 					cwallbase.close();
 					is_connect = false;
 				}
+				//
+			} else {
+				is_connect = false;
+				QMessageBox::critical(this, windowTitle(), tr("Uncorrect or damaged structure in default database") + ": " + user +"@" + base, QMessageBox::Close);
 			}
-		} else {
-			is_connect = false;
-			QMessageBox::critical(this, windowTitle(), tr("Uncorrect or damaged structure in default database") + ": " + user +"@" + base, QMessageBox::Close);
 		}
 	} else {
 		db_close();
@@ -109,8 +113,9 @@ void CWallManager::db_cfg_update()
 
 void CWallManager::db_close()
 {
-		// TODO close and diactivaed all SQL-requered objects
+	// TODO close and diactivaed all SQL-requered objects
 
+	delete User::current();
 }
 
 void CWallManager::db_open_success()

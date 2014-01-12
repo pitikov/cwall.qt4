@@ -285,8 +285,12 @@ void DialogDatabase::databaseTest()
 	testdb.setPassword(model->data(db_index, DbPasswordRole).toString());
 	testdb.setPort(3306);
 
-	if (testdb.isValid() && testdb.open() && validate_dbstruct(db_index)) {
-		QMessageBox::information(this, windowTitle(), tr("Database") + " " + model->data(db_index, Qt::DisplayRole).toString() + " " + tr("access success"), QMessageBox::Close, QMessageBox::Close);
+	if (testdb.isValid() && testdb.open()) {
+		if (validate_dbstruct(&testdb)) {
+			QMessageBox::information(this, windowTitle(), tr("Database") + " " + model->data(db_index, Qt::DisplayRole).toString() + " " + tr("access success"), QMessageBox::Close, QMessageBox::Close);
+		} else {
+			QMessageBox::critical(this, windowTitle(), tr("Uncorrect or damaged structure in database") + ": " + testdb.userName() +"@" + testdb.databaseName(), QMessageBox::Close);
+		}
 		testdb.close();
 	} else {
 		QMessageBox::warning(this, windowTitle(), tr("Database") + " " + model->data(db_index, Qt::DisplayRole).toString() + " " + tr("access deny"), QMessageBox::Close, QMessageBox::Close);
@@ -408,32 +412,34 @@ QStringList DialogDatabase::sqlQueryListFromFile()
 	return list;
 }
 
-bool DialogDatabase::validate_dbstruct(QModelIndex index)
+bool DialogDatabase::validate_dbstruct(QSqlDatabase* base)
 {
 	bool ret = true;
 
-	QString host, base, user, passwd;
-	int port;
 
-	if (index.isValid()) {
-		host = model->data(index.parent(), Qt::DisplayRole).toString();
-		base = model->data(index, DbBaseRole).toString();
-		user = model->data(index, DbUserRole).toString();
-		passwd = model->data(index, DbPasswordRole).toString();
-		port = 3306;
-	} else {
-		if (!DialogConfigure::cfg()->defaultDatabase(&host, &base, &user, &passwd, &port)) return false;
-	}
+	QFile file(DialogConfigure::cfg()->value("SQL_Files", "dbcore", "/usr/share/cwall/sql/schema.mysql.sql").toString());
+	QStringList etalon;
 
-	QSqlDatabase probedb = QSqlDatabase::addDatabase("QMYSQL", "cwall_probe");
-	if (probedb.open()) {
-		QStringList tables = probedb.tables(QSql::Tables);
-		// TODO Add test for database structure complit (check table list (tables) to exists requred tables)
+	if (file.open(QIODevice::ReadOnly)) {
+		while (!file.atEnd()) {
+			QString tempstr = QString::fromLocal8Bit(file.readLine()).simplified();
+			if (tempstr.left(12).toLower() == QString("create table").toLower() ) {
+				etalon << tempstr.split("`").at(1);
+			}
+		}
+		file.close();
+	} else qDebug() << "File open error";
 
-		probedb.close();
-	} else {
-		ret = false;
-	}
+		QStringList tables = base->tables(QSql::Tables);
+
+		for (int id = 0; id < etalon.count(); id++) {
+			if (tables.indexOf(etalon.at(id)) == -1) {
+				qDebug() << etalon.at(id);
+				qDebug() << tables;
+				ret = false;
+				break;
+			}
+		}
 
 	QSqlDatabase::removeDatabase("cwall_probe");
 	return ret;
