@@ -11,16 +11,19 @@ public:
 	typedef enum Role {
 		None = 0x00,
 		RaceJuide = 0x01,
-		Secretar = 0x02,
-		MainRefere = 0x04,
-		Grand = None | RaceJuide | Secretar | MainRefere
+		MainSecretar = 0x03,
+		MainReferee = 0x05,
+		Admin = 0x08,
+		Grand = None | RaceJuide | MainSecretar | MainReferee
 	} Role;
 
   ~User();
 	int uid();
 	static User *current( int uid = -1 );
 	bool isSuperuser();
-
+	Role access(int competition);
+	QString name();
+	QString login();
 
 private:
 	explicit User(int uid);
