@@ -2,12 +2,14 @@
 #define CWALLMANAGER_H
 
 #include <QMainWindow>
+#include <qmdisubwindow.h>
 #include <QtSql>
 
 #include "ui_cwall_manager.h"
 #include "ui_dialog_auth.h"
 #include "dialogdatabase.h"
 #include "dialogconfigure.h"
+#include "formlibraryeditor.h"
 
 namespace Ui {
 	class CWallManager;
@@ -39,6 +41,9 @@ protected:
 public slots:
 	void db_connect(bool is_connect);
 	void db_cfg_update();
+
+	void db_open_success();
+	void db_close();
 
 };
 

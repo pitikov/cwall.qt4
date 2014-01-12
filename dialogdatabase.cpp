@@ -126,6 +126,7 @@ void DialogDatabase::reject()
 int DialogDatabase::exec()
 {
 	model->clear();
+	DialogConfigure::cfg()->settings()->sync();
 
 	int hosts = DialogConfigure::cfg()->settings()->beginReadArray(DbSettings);
 
@@ -385,7 +386,7 @@ QStringList DialogDatabase::sqlQueryListFromFile()
 {
 	QStringList list;
 	QString to_commit;
-	QFile file(DialogConfigure::cfg()->value("SQL Files", "dbcore", "/usr/share/cwall/sql/schema.mysql.sql").toString());
+	QFile file(DialogConfigure::cfg()->value("SQL_Files", "dbcore", "/usr/share/cwall/sql/schema.mysql.sql").toString());
 	if (file.open(QIODevice::ReadOnly)) {
 		while (!file.atEnd()) {
 			QString tempstr = QString::fromLocal8Bit(file.readLine()).simplified();

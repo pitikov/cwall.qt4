@@ -24,16 +24,22 @@ public:
   void setValue(QString group, QString key, QVariant value);
   QSettings *settings();
   bool defaultDatabase( QString *host, QString *base, QString *user, QString* passwd, int *port );
+	bool registration();
 
 private:
   explicit DialogConfigure(QWidget* parent = 0, Qt::WindowFlags f = 0);
   virtual void accept();
   virtual void reject();
-	int exec();
 
   static DialogConfigure *self_;
   Ui::DialogConfigure *ui;
   QSettings *cfg_;
+
+public slots:
+	int exec();
+
+private slots:
+	void serialValidate();
 };
 
 #endif // DIALOGCONFIGURE_H

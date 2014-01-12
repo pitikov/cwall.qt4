@@ -1,5 +1,6 @@
 #include "cwallmanager.h"
 #include <QMessageBox>
+#include <qmdisubwindow.h>
 
 #include <QCryptographicHash>
 
@@ -18,7 +19,6 @@ CWallManager::CWallManager(QWidget* parent, Qt::WindowFlags flags)
 	ui->setupUi(this);
 
 	setConnections();
-
 	ui->actionManagerDbConnect->setChecked(DialogConfigure::cfg()->defaultDatabase(&host, &base, &user, &passwd, &port));
 
 }
@@ -70,8 +70,7 @@ void CWallManager::db_connect(bool is_connect)
 				if (dialog_auth.exec() == QDialog::Accepted) {
 
 					if (QCryptographicHash::hash(ui_auth->lineEdit->text().toLatin1(), QCryptographicHash::Md5).toHex() == sql_model_user.record(ui_auth->comboBox->currentIndex()).value("pwdhash").toString()) {
-
-						// TODO activated objects from database open
+						db_open_success();
 					} else {
 						QMessageBox::warning(this, dialog_auth.windowTitle(), tr("Uncorrect password"));
 						cwallbase.close();
@@ -87,13 +86,13 @@ void CWallManager::db_connect(bool is_connect)
 			QMessageBox::critical(this, windowTitle(), tr("Uncorrect or damaged structure in default database") + ": " + user +"@" + base, QMessageBox::Close);
 		}
 	} else {
-		// TODO close and diactivaed all SQL-requered objects
-
+		db_close();
 		cwallbase.close();
 	}
 	ui->menuCompetition->setEnabled(is_connect);
 	ui->toolBarCompetition->setEnabled(is_connect);
 	ui->actionManagerDbConnect->setChecked(is_connect);
+	ui->actionLibrary_static_data->setEnabled(is_connect);
 	ui->actionManagerDbConnect->blockSignals(false);
 }
 
@@ -104,6 +103,18 @@ void CWallManager::db_cfg_update()
 		db_connect(false);
 		db_connect(true);
 	}
+}
+
+void CWallManager::db_close()
+{
+		// TODO close and diactivaed all SQL-requered objects
+
+}
+
+void CWallManager::db_open_success()
+{
+	// TODO activated objects from database open
+
 }
 
 

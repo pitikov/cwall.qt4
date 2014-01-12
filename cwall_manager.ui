@@ -19,7 +19,14 @@
      <number>2</number>
     </property>
     <item>
-     <widget class="QMdiArea" name="mdiArea"/>
+     <widget class="QMdiArea" name="mdiArea">
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -40,6 +47,7 @@
     <addaction name="actionManagerDbConnect"/>
     <addaction name="separator"/>
     <addaction name="actionManagerConfiguration"/>
+    <addaction name="actionLibrary_static_data"/>
     <addaction name="separator"/>
     <addaction name="actionManagerExit"/>
    </widget>
@@ -94,6 +102,7 @@
    <addaction name="actionManagerDbConnect"/>
    <addaction name="separator"/>
    <addaction name="actionManagerConfiguration"/>
+   <addaction name="actionLibrary_static_data"/>
   </widget>
   <widget class="QToolBar" name="toolBarCompetition">
    <property name="windowTitle">
@@ -240,7 +249,9 @@
   </action>
   <action name="actionHelpRules">
    <property name="icon">
-    <iconset theme="acroread"/>
+    <iconset theme="acroread">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Rules</string>
@@ -251,10 +262,22 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="network-connect"/>
+    <iconset theme="network-connect">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionLibrary_static_data">
+   <property name="icon">
+    <iconset theme="accessories-dictionary">
+     <normaloff/>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Library static data</string>
    </property>
   </action>
  </widget>
