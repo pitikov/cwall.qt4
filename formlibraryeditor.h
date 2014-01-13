@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSqlTableModel>
+#include <QSqlRelationalTableModel>
 
 #include "ui_form_library_editor.h"
 
@@ -26,6 +27,9 @@ private:
 	QSqlTableModel *modelRanges;
 	QSqlTableModel *modelCompetitionTypes;
 	QSqlTableModel *modelAgeGroups;
+	QSqlTableModel *modelTeams;
+	QSqlRelationalTableModel *modelCompetitors;
+	QSqlTableModel *modelUser;
 };
 
 #endif // FORMLIBRARYEDITOR_H
