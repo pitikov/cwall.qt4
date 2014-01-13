@@ -2,6 +2,8 @@
 #include <QCryptographicHash>
 
 #include <QDebug>
+#include <QDir>
+#include <QFileDialog>
 
 DialogConfigure *DialogConfigure::self_ = NULL;
 
@@ -22,6 +24,7 @@ void DialogConfigure::accept()
 {
 	setValue("SQL_Files", "dbcore", ui->lineEditSqlCore->text());
 	setValue("PDF_Files", "rules", ui->lineEditRules->text());
+	setValue("Output_Files", "target", ui->lineEditOutputDir->text());
 
 	setValue("registration", "organization", ui->lineEditOrganization->text());
 	setValue("registration", "email", ui->lineEditEmail->text());
@@ -115,7 +118,8 @@ int DialogConfigure::exec()
 	settings()->sync();
 	ui->tabWidget->setCurrentWidget(ui->tabFiles);
 	ui->lineEditSqlCore->setText(value("SQL_Files", "dbcore", "/usr/share/cwall/sql/schema.mysql.sql").toString());
-	ui->lineEditRules->setText(value("PDF_Files", "rules", "/usr/share/cwall/doc/rules2012.pdf").toString());
+	ui->lineEditRules->setText(value("PDF_Files", "rules", "/usr/share/cwall/pdf/rules2012.pdf").toString());
+	ui->lineEditOutputDir->setText(value("Output_Files", "target", QDir::homePath() + "/climbing_wall").toString());
 
 	ui->lineEditEmail->setText(value("Registration", "email").toString());
 	ui->lineEditOrganization->setText(value("Registration", "organization").toString());
@@ -147,6 +151,30 @@ void DialogConfigure::serialValidate()
 		ui->labelRegStatus->setPixmap(QPixmap("/usr/share/icons/default.kde4/32x32/actions/view-certificate.png"));
 	} else {
 		ui->labelRegStatus->setPixmap(QPixmap("/usr/share/icons/default.kde4/32x32/actions/dialog-cancel.png"));
+	}
+}
+
+void DialogConfigure::setOutputPath()
+{
+	QString path = QFileDialog::getExistingDirectory(this, tr("Documentation output"), ui->lineEditOutputDir->text());
+	if (!path.isEmpty()) {
+		ui->lineEditOutputDir->setText(path);
+	}
+}
+
+void DialogConfigure::setRulesPath()
+{
+	QString path = QFileDialog::getOpenFileName(this, tr("Competition rules pdf"), ui->lineEditRules->text(), "PDF file (*.PDF *.pdf)");
+	if (!path.isEmpty()) {
+		ui->lineEditRules->setText(path);
+	}
+}
+
+void DialogConfigure::setSqlPath()
+{
+	QString path = QFileDialog::getOpenFileName(this, tr("SQL core database script"), ui->lineEditSqlCore->text(), "SQL scripts (*.SQL *.sql)");
+	if (!path.isEmpty()) {
+		ui->lineEditSqlCore->setText(path);
 	}
 }
 

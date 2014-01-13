@@ -40,6 +40,9 @@ public slots:
 
 private slots:
 	void serialValidate();
+	void setSqlPath();
+	void setRulesPath();
+	void setOutputPath();
 };
 
 #endif // DIALOGCONFIGURE_H
