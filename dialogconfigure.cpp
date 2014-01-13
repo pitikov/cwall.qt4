@@ -178,4 +178,15 @@ void DialogConfigure::setSqlPath()
 	}
 }
 
+bool DialogConfigure::rulseAccess()
+{
+	bool ret = false;
+	QFile rules(value("PDF_Files", "rules", "/usr/share/cwall/pdf/rules2012.pdf").toString());
+	if (rules.open(QIODevice::ReadOnly)) {
+		ret = true;
+		rules.close();
+	}
+	return ret;
+}
+
 #include "dialogconfigure.moc"

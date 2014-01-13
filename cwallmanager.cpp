@@ -21,7 +21,7 @@ CWallManager::CWallManager(QWidget* parent, Qt::WindowFlags flags)
 
 	setConnections();
 	ui->actionManagerDbConnect->setChecked(DialogConfigure::cfg()->defaultDatabase(&host, &base, &user, &passwd, &port));
-
+	configUpdate();
 }
 
 void CWallManager::setConnections()
@@ -34,6 +34,7 @@ void CWallManager::setConnections()
 	connect(ui->actionLibrary_static_data, SIGNAL(activated()), this, SLOT(mdi_window_show()));
 
 	connect(dialogDatabase, SIGNAL(accepted()), this, SLOT(db_cfg_update()));
+	connect(DialogConfigure::cfg(), SIGNAL(accepted()), this, SLOT(configUpdate()));
 }
 
 bool CWallManager::event(QEvent* event)
@@ -141,6 +142,11 @@ QWidget *CWallManager::findSubWindow(QString objectName)
 			return ui->mdiArea->subWindowList().at(id);
 	}
 	return NULL;
+}
+
+void CWallManager::configUpdate()
+{
+	ui->actionHelpRules->setVisible(DialogConfigure::cfg()->rulseAccess());
 }
 
 

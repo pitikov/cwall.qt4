@@ -49,6 +49,7 @@ public slots:
 	void db_close();
 
 	void mdi_window_show(bool status = true);
+	void configUpdate();
 
 };
 

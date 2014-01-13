@@ -25,6 +25,7 @@ public:
   QSettings *settings();
   bool defaultDatabase( QString *host, QString *base, QString *user, QString* passwd, int *port );
 	bool registration();
+	bool rulseAccess();
 
 private:
   explicit DialogConfigure(QWidget* parent = 0, Qt::WindowFlags f = 0);
