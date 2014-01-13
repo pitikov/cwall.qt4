@@ -2,6 +2,7 @@
 #define FORMLIBRARYEDITOR_H
 
 #include <QWidget>
+#include <QSqlTableModel>
 
 #include "ui_form_library_editor.h"
 
@@ -17,10 +18,14 @@ public:
 	~FormLibraryEditor();
 
 public slots:
-// 	void setShown(bool);
 
 private:
 	Ui::FormLibraryEditor *ui;
+	QSqlDatabase	cwall;
+	QSqlTableModel *modelDiffucalty;
+	QSqlTableModel *modelRanges;
+	QSqlTableModel *modelCompetitionTypes;
+	QSqlTableModel *modelAgeGroups;
 };
 
 #endif // FORMLIBRARYEDITOR_H

@@ -86,7 +86,6 @@ void CWallManager::db_connect(bool is_connect)
 					cwallbase.close();
 					is_connect = false;
 				}
-				//
 			} else {
 				is_connect = false;
 				QMessageBox::critical(this, windowTitle(), tr("Uncorrect or damaged structure in default database") + ": " + user +"@" + base, QMessageBox::Close);
