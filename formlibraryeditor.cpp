@@ -86,6 +86,16 @@ FormLibraryEditor::FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags)
 	ui->tableViewCompetitors->hideColumn(modelCompetitors->fieldIndex("uid"));
 	modelCompetitors->setRelation(modelCompetitors->fieldIndex("team"),QSqlRelation("lib_team", "gid", "team"));
 	modelCompetitors->select();
+	ui->comboBoxCompetitorGender->addItem(tr("Male"), 1);
+	ui->comboBoxCompetitorGender->addItem(tr("Female"), 2);
+
+	for (int id = 0; id < modelRanges->rowCount(); id++) {
+		ui->comboBoxCompetitorRange->addItem(modelRanges->record(id).value("label").toString(), modelRanges->record(id).value("id").toInt());
+	}
+	for (int id = 0; id < modelTeams->rowCount(); id++) {
+		ui->comboBoxCompetitorTeam->addItem(modelTeams->record(id).value("title").toString() + " (" + modelTeams->record(id).value("region").toString() + ")", modelTeams->record(id).value("gid").toInt());
+	}
+
 
 	modelUser->setTable("site_user");
 	ui->tableViewUsers->setModel(modelUser);
