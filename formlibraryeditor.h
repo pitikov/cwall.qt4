@@ -29,6 +29,13 @@ private slots:
 	void modelUserCommit();
 	void modelUserUpdate();
 	void currentUserDelete();
+	void modelDifficultyUpdate();
+	void modelDifficultyCommit();
+	void currentDiffChanged(const QModelIndex &index);
+	void diffAdd();
+	void diffDelete();
+	void competitionTypeCommit();
+	void competitionTypeUpdate();
 
 private:
 	Ui::FormLibraryEditor *ui;

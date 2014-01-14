@@ -62,26 +62,44 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>6</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="pageCompetitonTypes">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QTableView" name="tableViewCompetitionTypes"/>
+        <widget class="QTableView" name="tableViewCompetitionTypes">
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="pageSportRanges">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QListView" name="listViewSportRanges"/>
+        <widget class="QListView" name="listViewSportRanges">
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="pageClimbingDifficulty">
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QListView" name="listViewDiffucalties"/>
+        <widget class="QListView" name="listViewDiffucalties">
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -91,6 +109,12 @@
         <widget class="QTableView" name="tableViewAgeGroups">
          <property name="contextMenuPolicy">
           <enum>Qt::ActionsContextMenu</enum>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
          </property>
         </widget>
        </item>
@@ -206,6 +230,11 @@
               <property name="text">
                <string>User add</string>
               </property>
+              <property name="icon">
+               <iconset theme="list-add-user">
+                <normaloff/>
+               </iconset>
+              </property>
              </widget>
             </item>
             <item>
@@ -232,23 +261,109 @@
    </item>
   </layout>
   <action name="actionUserUpdate">
+   <property name="icon">
+    <iconset theme="edit-undo">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Update</string>
    </property>
   </action>
   <action name="actionUserCommit">
+   <property name="icon">
+    <iconset theme="document-save">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Commit</string>
    </property>
   </action>
   <action name="actionUserChangePasswd">
+   <property name="icon">
+    <iconset theme="dialog-password">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Change password</string>
    </property>
   </action>
   <action name="actionUserDelete">
+   <property name="icon">
+    <iconset theme="edit-delete">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionDifficultyCommit">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
+   <property name="text">
+    <string>Commit</string>
+   </property>
+   <property name="toolTip">
+    <string>Save difficulty table</string>
+   </property>
+  </action>
+  <action name="actionDifficultyUpdate">
+   <property name="icon">
+    <iconset theme="edit-undo"/>
+   </property>
+   <property name="text">
+    <string>Update</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload difficulty table</string>
+   </property>
+  </action>
+  <action name="actionDifficultyAdd">
+   <property name="icon">
+    <iconset theme="list-add"/>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+   <property name="toolTip">
+    <string>Add record</string>
+   </property>
+  </action>
+  <action name="actionDifficultyDelete">
+   <property name="icon">
+    <iconset theme="edit-delete"/>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete current</string>
+   </property>
+  </action>
+  <action name="actionCTypeCommit">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
+   <property name="text">
+    <string>Commit</string>
+   </property>
+   <property name="toolTip">
+    <string>Save competition types table</string>
+   </property>
+  </action>
+  <action name="actionCTypeUpdate">
+   <property name="icon">
+    <iconset theme="edit-undo"/>
+   </property>
+   <property name="text">
+    <string>Update</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload competition types</string>
    </property>
   </action>
  </widget>
@@ -444,6 +559,102 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDifficultyCommit</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>modelDifficultyCommit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDifficultyUpdate</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>modelDifficultyUpdate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDifficultyAdd</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>diffAdd()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDifficultyDelete</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>diffDelete()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCTypeCommit</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>competitionTypeCommit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCTypeUpdate</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>competitionTypeUpdate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>currentUserChanged(QModelIndex)</slot>
@@ -453,5 +664,12 @@
   <slot>userAdd()</slot>
   <slot>userDataValidate(QString)</slot>
   <slot>userPasswdChange()</slot>
+  <slot>modelDifficultyUpdate()</slot>
+  <slot>modelDifficultyCommit()</slot>
+  <slot>diffAdd()</slot>
+  <slot>diffDelete()</slot>
+  <slot>currentDiffCanged(QModelIndex)</slot>
+  <slot>competitionTypeCommit()</slot>
+  <slot>competitionTypeUpdate()</slot>
  </slots>
 </ui>
