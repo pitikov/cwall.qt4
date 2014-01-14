@@ -50,6 +50,7 @@ public slots:
 
 	void mdi_window_show(bool status = true);
 	void configUpdate();
+	void db_auth_validate(int index);
 
 };
 

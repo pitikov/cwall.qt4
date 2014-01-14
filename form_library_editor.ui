@@ -62,7 +62,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="pageCompetitonTypes">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -121,6 +121,109 @@
          <property name="contextMenuPolicy">
           <enum>Qt::ActionsContextMenu</enum>
          </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widgetUserEdit" native="true">
+         <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelUserLogin">
+            <property name="text">
+             <string>Login</string>
+            </property>
+            <property name="buddy">
+             <cstring>lineEditUserLogin</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineEditUserLogin">
+            <property name="inputMask">
+             <string>NNNNNNNNNNNNNNNN; </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelUserName">
+            <property name="text">
+             <string>User name</string>
+            </property>
+            <property name="buddy">
+             <cstring>lineEditUserName</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineEditUserName">
+            <property name="maxLength">
+             <number>32</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelUserPasswd">
+            <property name="text">
+             <string>Password</string>
+            </property>
+            <property name="buddy">
+             <cstring>lineEditUserPasswd</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="lineEditUserPasswd">
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayoutUserEdit">
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButtonUserCommit">
+              <property name="text">
+               <string>User add</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -128,7 +231,41 @@
     </widget>
    </item>
   </layout>
+  <action name="actionUserUpdate">
+   <property name="text">
+    <string>Update</string>
+   </property>
+  </action>
+  <action name="actionUserCommit">
+   <property name="text">
+    <string>Commit</string>
+   </property>
+  </action>
+  <action name="actionUserChangePasswd">
+   <property name="text">
+    <string>Change password</string>
+   </property>
+  </action>
+  <action name="actionUserDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
  </widget>
+ <tabstops>
+  <tabstop>listWidgetCatalog</tabstop>
+  <tabstop>tableViewUsers</tabstop>
+  <tabstop>lineEditUserLogin</tabstop>
+  <tabstop>lineEditUserName</tabstop>
+  <tabstop>lineEditUserPasswd</tabstop>
+  <tabstop>pushButtonUserCommit</tabstop>
+  <tabstop>tableViewCompetitors</tabstop>
+  <tabstop>tableViewCompetitionTypes</tabstop>
+  <tabstop>listViewSportRanges</tabstop>
+  <tabstop>listViewDiffucalties</tabstop>
+  <tabstop>tableViewTeams</tabstop>
+  <tabstop>tableViewAgeGroups</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -147,5 +284,174 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tableViewUsers</sender>
+   <signal>activated(QModelIndex)</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>currentUserChanged(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>393</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableViewUsers</sender>
+   <signal>pressed(QModelIndex)</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>currentUserChanged(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>393</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonUserCommit</sender>
+   <signal>clicked()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>userAdd()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>414</x>
+     <y>361</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>453</x>
+     <y>387</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditUserLogin</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>userDataValidate(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>597</x>
+     <y>281</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>633</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditUserName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>userDataValidate(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>470</x>
+     <y>307</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>635</x>
+     <y>312</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditUserPasswd</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>userDataValidate(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>539</x>
+     <y>331</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>633</x>
+     <y>343</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUserChangePasswd</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>userPasswdChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUserCommit</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>modelUserCommit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUserUpdate</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>modelUserUpdate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUserDelete</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>currentUserDelete()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>currentUserChanged(QModelIndex)</slot>
+  <slot>modelUserCommit()</slot>
+  <slot>modelUserUpdate()</slot>
+  <slot>currentUserDelete()</slot>
+  <slot>userAdd()</slot>
+  <slot>userDataValidate(QString)</slot>
+  <slot>userPasswdChange()</slot>
+ </slots>
 </ui>

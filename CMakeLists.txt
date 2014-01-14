@@ -8,7 +8,7 @@ set(SQL_PATH /share/cwall/sql)
 set(PDF_FILES rules2012.pdf)
 set(PDF_PATH /share/cwall/pdf)
 
-set(cwall_UI cwall_manager.ui dialog_database.ui dialog_configure.ui dialog_db_create.ui dialog_hostname.ui dialog_rebuild.ui dialog_auth.ui form_library_editor.ui)
+set(cwall_UI cwall_manager.ui dialog_database.ui dialog_configure.ui dialog_db_create.ui dialog_hostname.ui dialog_rebuild.ui dialog_auth.ui form_library_editor.ui dialog_user_password.ui)
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 
 set(cwall_SRCS user.cpp formlibraryeditor.cpp competition.cpp dialogconfigure.cpp dialogdatabase.cpp cwallmanager.cpp main.cpp)

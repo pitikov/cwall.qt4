@@ -6,9 +6,11 @@
 #include <QSqlRelationalTableModel>
 
 #include "ui_form_library_editor.h"
+#include "ui_dialog_user_password.h"
 
 namespace Ui {
 	class FormLibraryEditor;
+	class DialogUserPassword;
 }
 
 class FormLibraryEditor : public QWidget
@@ -18,10 +20,19 @@ public:
 	explicit FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags = 0);
 	~FormLibraryEditor();
 
-public slots:
+private slots:
+	void modelChange();
+	void currentUserChanged(const QModelIndex &index );
+	void userAdd();
+	void userDataValidate(const QString &arg);
+	void userPasswdChange();
+	void modelUserCommit();
+	void modelUserUpdate();
+	void currentUserDelete();
 
 private:
 	Ui::FormLibraryEditor *ui;
+	Ui::DialogUserPassword *ui_user_pwd;
 	QSqlDatabase	cwall;
 	QSqlTableModel *modelDiffucalty;
 	QSqlTableModel *modelRanges;
