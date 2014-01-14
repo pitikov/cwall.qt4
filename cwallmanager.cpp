@@ -19,9 +19,10 @@ CWallManager::CWallManager(QWidget* parent, Qt::WindowFlags flags)
 {
 	ui->setupUi(this);
 
+	db_connect(false);
 	setConnections();
 	ui->actionManagerDbConnect->setChecked(DialogConfigure::cfg()->defaultDatabase(&host, &base, &user, &passwd, &port));
-	configUpdate();
+	configUpdate();	
 }
 
 void CWallManager::setConnections()
@@ -65,16 +66,28 @@ void CWallManager::db_connect(bool is_connect)
 				ui_auth->setupUi(&dialog_auth);
 				ui_auth->lineEdit->clear();
 				ui_auth->comboBox->clear();
+				
+				connect(ui_auth->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(db_auth_validate(int)));
 
 				QSqlQueryModel sql_model_user;
 				sql_model_user.setQuery("select * from site_user", cwallbase);
 
+				ui_auth->comboBox->addItem(tr("Select database account"), 0);
 				for (int uid = 0; uid < sql_model_user.rowCount(); uid++) {
 					ui_auth->comboBox->addItem(sql_model_user.record(uid).value("login").toString(), sql_model_user.record(uid).value("uid").toInt());
 				}
+				ui_auth->comboBox->setCurrentIndex(0);
+				db_auth_validate(ui_auth->comboBox->currentIndex());
 				if (dialog_auth.exec() == QDialog::Accepted) {
+					int record = 0;
+					for (int recid = 0; recid < sql_model_user.rowCount(); recid++) {
+						if (sql_model_user.record(recid).value("uid").toInt() == ui_auth->comboBox->itemData(ui_auth->comboBox->currentIndex()).toInt()) {
+							record = recid;
+							break;
+						}
+					}
 
-					if (QCryptographicHash::hash(ui_auth->lineEdit->text().toLatin1(), QCryptographicHash::Md5).toHex() == sql_model_user.record(ui_auth->comboBox->currentIndex()).value("pwdhash").toString()) {
+					if (QCryptographicHash::hash(ui_auth->lineEdit->text().toLatin1(), QCryptographicHash::Md5).toHex() == sql_model_user.record(record).value("pwdhash").toString()) {
 						User::current(ui_auth->comboBox->itemData(ui_auth->comboBox->currentIndex()).toInt());
 						db_open_success();
 					} else {
@@ -82,6 +95,8 @@ void CWallManager::db_connect(bool is_connect)
 						cwallbase.close();
 						is_connect = false;
 					}
+					
+
 				} else {
 					cwallbase.close();
 					is_connect = false;
@@ -92,6 +107,7 @@ void CWallManager::db_connect(bool is_connect)
 			}
 		}
 	} else {
+		ui->mdiArea->closeAllSubWindows();
 		db_close();
 		cwallbase.close();
 	}
@@ -148,5 +164,13 @@ void CWallManager::configUpdate()
 	ui->actionHelpRules->setVisible(DialogConfigure::cfg()->rulseAccess());
 }
 
+void CWallManager::db_auth_validate(int index)
+{
+	bool is_enable = false;
+	if (ui_auth->comboBox->count() >= index) {
+		if (ui_auth->comboBox->itemData(index).toInt() > 0) is_enable = true;
+	}
+	ui_auth->pushButtonLogin->setEnabled(is_enable);
+}
 
 #include "cwallmanager.moc"
