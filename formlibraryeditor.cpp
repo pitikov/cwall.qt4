@@ -23,6 +23,7 @@ FormLibraryEditor::FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags)
 {
 	ui->setupUi(this);
 
+	setMinimumWidth(600);
 	QAction *actionSeparator = new QAction(this);
 	actionSeparator->setSeparator(true);
 	QAction *actionSeparator1 = new QAction(this);
@@ -35,7 +36,7 @@ FormLibraryEditor::FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags)
 	modelDiffucalty->select();
 	modelDiffucalty->setEditStrategy(QSqlTableModel::OnManualSubmit);
 	ui->actionDifficultyCommit->setDisabled(true);
-	if (User::current()->isSuperuser()) {
+	if (User::current()->isSuperuser() & DialogConfigure::cfg()->registration()) {
 		ui->listViewDiffucalties->setContextMenuPolicy(Qt::ActionsContextMenu);
 		ui->listViewDiffucalties->addAction(ui->actionDifficultyUpdate);
 		ui->listViewDiffucalties->addAction(ui->actionDifficultyCommit);
@@ -62,7 +63,7 @@ FormLibraryEditor::FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags)
 	ui->tableViewCompetitionTypes->hideColumn(modelCompetitionTypes->fieldIndex("prefix"));
 	ui->tableViewCompetitionTypes->hideColumn(modelCompetitionTypes->fieldIndex("id"));
 	modelCompetitionTypes->setEditStrategy(QSqlTableModel::OnManualSubmit);
-	if (User::current()->isSuperuser()) {
+	if (User::current()->isSuperuser() & DialogConfigure::cfg()->registration()) {
 		ui->tableViewCompetitionTypes->addAction(ui->actionCTypeCommit);
 		ui->tableViewCompetitionTypes->addAction(ui->actionCTypeUpdate);
 		ui->actionCTypeCommit->setDisabled(true);
@@ -77,17 +78,21 @@ FormLibraryEditor::FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags)
 	ui->tableViewAgeGroups->hideColumn(modelAgeGroups->fieldIndex("id"));
 	modelAgeGroups->sort(modelAgeGroups->fieldIndex("id"), Qt::AscendingOrder);
 	modelAgeGroups->setEditStrategy(QSqlTableModel::OnManualSubmit);
-	ui->tableViewAgeGroups->addAction(ui->actionAgeGroupUpdate);
-	ui->tableViewAgeGroups->addAction(ui->actionAgeGroupCommit);
-	ui->tableViewAgeGroups->addAction(actionSeparator);
-	ui->tableViewAgeGroups->addAction(ui->actionAgeGroupAdd);
-	ui->tableViewAgeGroups->addAction(ui->actionAgeGroupDelete);
-	ui->actionAgeGroupCommit->setDisabled(true);
-	ui->actionAgeGroupDelete->setDisabled(true);
-	connect(modelAgeGroups, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelChange()));
-	connect(ui->tableViewAgeGroups, SIGNAL(activated(QModelIndex)), this, SLOT(currentAgrpChanged(QModelIndex)));
-	connect(ui->tableViewAgeGroups, SIGNAL(pressed(QModelIndex)), this, SLOT(currentAgrpChanged(QModelIndex)));
-	
+	if (DialogConfigure::cfg()->registration()) {
+		ui->tableViewAgeGroups->addAction(ui->actionAgeGroupUpdate);
+		ui->tableViewAgeGroups->addAction(ui->actionAgeGroupCommit);
+		ui->tableViewAgeGroups->addAction(actionSeparator);
+		ui->tableViewAgeGroups->addAction(ui->actionAgeGroupAdd);
+		ui->tableViewAgeGroups->addAction(ui->actionAgeGroupDelete);
+		ui->actionAgeGroupCommit->setDisabled(true);
+		ui->actionAgeGroupDelete->setDisabled(true);
+		connect(modelAgeGroups, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelChange()));
+		connect(ui->tableViewAgeGroups, SIGNAL(activated(QModelIndex)), this, SLOT(currentAgrpChanged(QModelIndex)));
+		connect(ui->tableViewAgeGroups, SIGNAL(pressed(QModelIndex)), this, SLOT(currentAgrpChanged(QModelIndex)));
+	} else {
+		ui->tableViewAgeGroups->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	}
+
 	modelTeams->setTable("lib_team");
 	ui->tableViewTeams->setModel(modelTeams);
 	ui->tableViewTeams->hideColumn(modelTeams->fieldIndex("gid"));
@@ -104,7 +109,7 @@ FormLibraryEditor::FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags)
 	connect(modelTeams, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelChange()));
 	connect(ui->tableViewTeams, SIGNAL(activated(QModelIndex)), this, SLOT(currentTeamChanged(QModelIndex)));
 	connect(ui->tableViewTeams, SIGNAL(pressed(QModelIndex)), this, SLOT(currentTeamChanged(QModelIndex)));
-	
+
 	modelCompetitors->setTable("lib_competitor");
 	ui->tableViewCompetitors->setModel(modelCompetitors);
 	ui->tableViewCompetitors->hideColumn(modelCompetitors->fieldIndex("uid"));
@@ -306,7 +311,7 @@ void FormLibraryEditor::competitorAdd()
 {
 	int row = modelCompetitors->rowCount();
 	QSqlRecord new_competitor;
-	
+
 	QSqlField f_uid("uid");
 	QSqlField f_name("name");
 	QSqlField f_dob("dob");
@@ -318,14 +323,14 @@ void FormLibraryEditor::competitorAdd()
 	f_gender.setValue(ui->comboBoxCompetitorGender->currentIndex()+1);
 	f_range.setValue(modelRanges->record(ui->comboBoxCompetitorRange->currentIndex()).value("id"));
 	f_team.setValue(modelTeams->record(ui->comboBoxCompetitorTeam->currentIndex()).value("gid"));
-	
+
 	new_competitor.append(f_uid);
 	new_competitor.append(f_name);
 	new_competitor.append(f_dob);
 	new_competitor.append(f_gender);
 	new_competitor.append(f_range);
 	new_competitor.append(f_team);
-	// FIXME Not inserting record to competitor list model 
+	// FIXME Not inserting record to competitor list model
 	if (modelCompetitors->insertRecord(-1, new_competitor)) {
 	} else qDebug() << "Record inserting error";
 }
@@ -420,15 +425,15 @@ void FormLibraryEditor::currentAgrpChanged( const QModelIndex& index )
 void FormLibraryEditor::pageChanged( const int& page )
 {
 	if (page == ui->stackedWidget->indexOf(ui->pageCompetitonTypes)) {
-		
+
 	} else if (page == ui->stackedWidget->indexOf(ui->pageClimbingDifficulty)) {
-		modelDiffucalty->sort(modelDiffucalty->fieldIndex("label"), Qt::AscendingOrder);		
+		modelDiffucalty->sort(modelDiffucalty->fieldIndex("label"), Qt::AscendingOrder);
 	} else if (page == ui->stackedWidget->indexOf(ui->pageSportRanges)) {
-		
+
 	} else if (page == ui->stackedWidget->indexOf(ui->pageTeams)) {
-		
+
 	} else if (page ==  ui->stackedWidget->indexOf(ui->pageUsers)) {
-		
+
 	} else if (page ==  ui->stackedWidget->indexOf(ui->pageCompetitors)) {
 		ui->comboBoxCompetitorTeam->clear();
 		ui->comboBoxCompetitorRange->clear();
@@ -437,11 +442,11 @@ void FormLibraryEditor::pageChanged( const int& page )
 		}
 		for (int id = 0; id < modelTeams->rowCount(); id++) {
 			if (!modelTeams->record(id).value("title").toString().isEmpty()) ui->comboBoxCompetitorTeam->addItem(modelTeams->record(id).value("title").toString() + " (" + modelTeams->record(id).value("region").toString() + ")", modelTeams->record(id).value("gid").toInt());
-		} 
+		}
 		ui->comboBoxCompetitorTeam->model()->sort(0, Qt::AscendingOrder);
 		ui->comboBoxCompetitorTeam->adjustSize();
 	} else if (page ==  ui->stackedWidget->indexOf(ui->pageAgeGroups)) {
-		
+
 	}
 }
 
