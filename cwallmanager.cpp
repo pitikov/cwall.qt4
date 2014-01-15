@@ -34,6 +34,7 @@ void CWallManager::setConnections()
 	connect(ui->actionManagerExit, SIGNAL(activated()), this, SLOT(close()));
 
 	connect(ui->actionLibrary_static_data, SIGNAL(activated()), this, SLOT(mdi_window_show()));
+	connect(ui->actionHelpRules, SIGNAL(activated()), this, SLOT(mdi_window_show()));
 
 	connect(dialogDatabase, SIGNAL(accepted()), this, SLOT(db_cfg_update()));
 	connect(DialogConfigure::cfg(), SIGNAL(accepted()), this, SLOT(configUpdate()));
@@ -142,9 +143,15 @@ void CWallManager::db_open_success()
 
 void CWallManager::mdi_window_show(bool status)
 {
-	if (sender()->objectName() == "actionLibrary_static_data") {
+	if (sender() == ui->actionLibrary_static_data ) {
 		QWidget *tgt = findSubWindow("FormLibraryEditor");
 		if ( !tgt ) ui->mdiArea->addSubWindow(new FormLibraryEditor(this))->show();
+		else tgt->showNormal();
+	}
+
+	if (sender() == ui->actionHelpRules) {
+		QWidget *tgt = findSubWindow("FormRulesViewer");
+		if ( !tgt ) ui->mdiArea->addSubWindow(new FormRulesViewer(this))->show();
 		else tgt->showNormal();
 	}
 	// TODO in this point set recieving for add or delete subWindow to mdiArea

@@ -8,14 +8,14 @@ set(SQL_PATH /share/cwall/sql)
 set(PDF_FILES rules2012.pdf)
 set(PDF_PATH /share/cwall/pdf)
 
-set(cwall_UI cwall_manager.ui dialog_database.ui dialog_configure.ui dialog_db_create.ui dialog_hostname.ui dialog_rebuild.ui dialog_auth.ui form_library_editor.ui dialog_user_password.ui)
+set(cwall_UI cwall_manager.ui dialog_database.ui dialog_configure.ui dialog_db_create.ui dialog_hostname.ui dialog_rebuild.ui dialog_auth.ui form_library_editor.ui dialog_user_password.ui form_rules_viewer.ui)
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 
-set(cwall_SRCS user.cpp formlibraryeditor.cpp competition.cpp dialogconfigure.cpp dialogdatabase.cpp cwallmanager.cpp main.cpp)
+set(cwall_SRCS rulesviewer.cpp user.cpp formlibraryeditor.cpp competition.cpp dialogconfigure.cpp dialogdatabase.cpp cwallmanager.cpp main.cpp)
 qt4_automoc(${cwall_SRCS})
 qt4_wrap_ui(cwall_FORMS ${cwall_UI})
 add_executable(cwall ${cwall_SRCS} ${cwall_FORMS})
-target_link_libraries(cwall ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTSQL_LIBRARY})
+target_link_libraries(cwall ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTSQL_LIBRARY} -lpoppler-qt4)
 
 install_files(${SQL_PATH} ${SQL_FILES})
 install_files(${PDF_PATH} ${PDF_FILES})

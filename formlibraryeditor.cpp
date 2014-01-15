@@ -337,17 +337,19 @@ void FormLibraryEditor::competitorAdd()
 
 void FormLibraryEditor::competitorFind(const QString& index)
 {
-
+	//TODO implict me
 }
 
 void FormLibraryEditor::competitorDel()
 {
+	//TODO implict me
 
 }
 
 void FormLibraryEditor::competitorMask()
 {
-
+	//TODO implict me
+	
 }
 
 void FormLibraryEditor::teamAdd()

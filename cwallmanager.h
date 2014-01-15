@@ -10,6 +10,7 @@
 #include "dialogdatabase.h"
 #include "dialogconfigure.h"
 #include "formlibraryeditor.h"
+#include "rulesviewer.h"
 
 namespace Ui {
 	class CWallManager;
@@ -32,6 +33,7 @@ protected:
 	Ui::DialogAuth	*ui_auth;
 	DialogDatabase	*dialogDatabase;
 	FormLibraryEditor *formLibraryEditor;
+	FormRulesViewer		*formRulesViever;
 	QString		host;
 	QString		base;
 	QString  	user;
