@@ -22,7 +22,8 @@ CWallManager::CWallManager(QWidget* parent, Qt::WindowFlags flags)
 	db_connect(false);
 	setConnections();
 	ui->actionManagerDbConnect->setChecked(DialogConfigure::cfg()->defaultDatabase(&host, &base, &user, &passwd, &port));
-	configUpdate();	
+	configUpdate();
+	ui->actionManagerDatabase->setDisabled(ui->actionManagerDbConnect->isChecked());
 }
 
 void CWallManager::setConnections()
@@ -66,7 +67,7 @@ void CWallManager::db_connect(bool is_connect)
 				ui_auth->setupUi(&dialog_auth);
 				ui_auth->lineEdit->clear();
 				ui_auth->comboBox->clear();
-				
+
 				connect(ui_auth->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(db_auth_validate(int)));
 
 				QSqlQueryModel sql_model_user;
@@ -95,7 +96,7 @@ void CWallManager::db_connect(bool is_connect)
 						cwallbase.close();
 						is_connect = false;
 					}
-					
+
 				} else {
 					cwallbase.close();
 					is_connect = false;
