@@ -6,6 +6,6 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
     CWallManager foo;
-    foo.show();
+    foo.showMaximized();
     return app.exec();
 }
