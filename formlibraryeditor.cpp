@@ -441,7 +441,11 @@ void FormLibraryEditor::pageChanged( const int& page )
 			ui->comboBoxCompetitorRange->addItem(modelRanges->record(id).value("label").toString(), modelRanges->record(id).value("id").toInt());
 		}
 		for (int id = 0; id < modelTeams->rowCount(); id++) {
-			if (!modelTeams->record(id).value("title").toString().isEmpty()) ui->comboBoxCompetitorTeam->addItem(modelTeams->record(id).value("title").toString() + " (" + modelTeams->record(id).value("region").toString() + ")", modelTeams->record(id).value("gid").toInt());
+			if (!modelTeams->record(id).value("title").toString().isEmpty()) {
+				QString title = modelTeams->record(id).value("title").toString();
+				if (!modelTeams->record(id).value("region").toString().isEmpty()) title += " (" + modelTeams->record(id).value("region").toString() + ")";
+				ui->comboBoxCompetitorTeam->addItem(title, modelTeams->record(id).value("gid").toInt());
+			}
 		}
 		ui->comboBoxCompetitorTeam->model()->sort(0, Qt::AscendingOrder);
 		ui->comboBoxCompetitorTeam->adjustSize();
