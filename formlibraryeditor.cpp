@@ -76,6 +76,17 @@ FormLibraryEditor::FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags)
 	modelAgeGroups->select();
 	ui->tableViewAgeGroups->hideColumn(modelAgeGroups->fieldIndex("id"));
 	modelAgeGroups->sort(modelAgeGroups->fieldIndex("id"), Qt::AscendingOrder);
+	modelAgeGroups->setEditStrategy(QSqlTableModel::OnManualSubmit);
+	ui->tableViewAgeGroups->addAction(ui->actionAgeGroupUpdate);
+	ui->tableViewAgeGroups->addAction(ui->actionAgeGroupCommit);
+	ui->tableViewAgeGroups->addAction(actionSeparator);
+	ui->tableViewAgeGroups->addAction(ui->actionAgeGroupAdd);
+	ui->tableViewAgeGroups->addAction(ui->actionAgeGroupDelete);
+	ui->actionAgeGroupCommit->setDisabled(true);
+	ui->actionAgeGroupDelete->setDisabled(true);
+	connect(modelAgeGroups, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelChange()));
+	connect(ui->tableViewAgeGroups, SIGNAL(activated(QModelIndex)), this, SLOT(currentAgrpChanged(QModelIndex)));
+	connect(ui->tableViewAgeGroups, SIGNAL(pressed(QModelIndex)), this, SLOT(currentAgrpChanged(QModelIndex)));
 	
 	modelTeams->setTable("lib_team");
 	ui->tableViewTeams->setModel(modelTeams);
@@ -237,6 +248,7 @@ void FormLibraryEditor::modelChange()
 	if (sender()==modelDiffucalty) ui->actionDifficultyCommit->setEnabled(true);
 	if (sender()==modelCompetitionTypes) ui->actionCTypeCommit->setEnabled(true);
 	if (sender()==modelTeams) ui->actionTeamCommit->setEnabled(true);
+	if (sender()==modelAgeGroups) ui->actionAgeGroupCommit->setEnabled(true);
 }
 
 void FormLibraryEditor::modelDifficultyCommit()
@@ -362,7 +374,44 @@ void FormLibraryEditor::teamUpdate()
 
 void FormLibraryEditor::currentTeamChanged(const QModelIndex& index)
 {
-	if (index.isValid()) ui->actionTeamDelete->setEnabled(true);
+	ui->actionTeamDelete->setEnabled(index.isValid());
+}
+
+void FormLibraryEditor::agrpAdd()
+{
+	if (modelAgeGroups->insertRecord(-1, QSqlRecord())) {
+		ui->tableViewAgeGroups->update();
+		ui->actionAgeGroupCommit->setEnabled(true);
+	}
+}
+
+void FormLibraryEditor::agrpCommit()
+{
+	if (modelAgeGroups->submitAll())
+	ui->actionAgeGroupCommit->setDisabled(true);
+	ui->actionAgeGroupDelete->setDisabled(true);
+	ui->tableViewAgeGroups->update();
+}
+
+void FormLibraryEditor::agrpDelete()
+{
+	if (ui->tableViewAgeGroups->currentIndex().isValid()) {
+		modelAgeGroups->removeRow(ui->tableViewAgeGroups->currentIndex().row());
+	}
+	ui->tableViewAgeGroups->update();
+	ui->actionAgeGroupCommit->setEnabled(true);
+}
+
+void FormLibraryEditor::agrpUpdate()
+{
+	modelAgeGroups->revertAll();
+	ui->tableViewAgeGroups->update();
+	ui->actionAgeGroupCommit->setDisabled(true);
+}
+
+void FormLibraryEditor::currentAgrpChanged( const QModelIndex& index )
+{
+	ui->actionAgeGroupDelete->setEnabled(index.isValid());
 }
 
 void FormLibraryEditor::pageChanged( const int& page )
@@ -391,9 +440,6 @@ void FormLibraryEditor::pageChanged( const int& page )
 	} else if (page ==  ui->stackedWidget->indexOf(ui->pageAgeGroups)) {
 		
 	}
-	
-
 }
-
 
 #include "formlibraryeditor.moc"

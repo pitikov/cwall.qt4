@@ -46,6 +46,11 @@ private slots:
 	void teamUpdate();
 	void teamCommit();
 	void currentTeamChanged(const QModelIndex &index);
+	void agrpAdd();
+	void agrpDelete();
+	void agrpCommit();
+	void agrpUpdate();
+	void currentAgrpChanged(const QModelIndex &index);
 
 private:
 	Ui::FormLibraryEditor *ui;

@@ -587,6 +587,38 @@
     <string>Update</string>
    </property>
   </action>
+  <action name="actionAgeGroupAdd">
+   <property name="icon">
+    <iconset theme="list-add"/>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </action>
+  <action name="actionAgeGroupDelete">
+   <property name="icon">
+    <iconset theme="edit-delete"/>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionAgeGroupCommit">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
+   <property name="text">
+    <string>Commit</string>
+   </property>
+  </action>
+  <action name="actionAgeGroupUpdate">
+   <property name="icon">
+    <iconset theme="edit-undo"/>
+   </property>
+   <property name="text">
+    <string>Update</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>lineEditCompetitorName</tabstop>
@@ -1042,6 +1074,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAgeGroupAdd</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>agrpAdd()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAgeGroupCommit</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>agrpCommit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAgeGroupDelete</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>agrpDelete()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAgeGroupUpdate</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>agrpUpdate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>currentUserChanged(QModelIndex)</slot>
@@ -1069,5 +1165,9 @@
   <slot>teamUpdate()</slot>
   <slot>teamCommit()</slot>
   <slot>pageChanged(int)</slot>
+  <slot>agrpAdd()</slot>
+  <slot>agrpDelete()</slot>
+  <slot>agrpCommit()</slot>
+  <slot>agrpUpdate()</slot>
  </slots>
 </ui>

@@ -96,7 +96,6 @@ void CWallManager::db_connect(bool is_connect)
 						is_connect = false;
 					}
 					
-
 				} else {
 					cwallbase.close();
 					is_connect = false;
