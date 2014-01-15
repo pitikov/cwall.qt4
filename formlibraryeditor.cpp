@@ -205,6 +205,7 @@ void FormLibraryEditor::currentUserDelete()
 	modelUser->removeRow(ui->tableViewUsers->currentIndex().row());
 	currentUserChanged(QModelIndex());
 	ui->actionUserCommit->setEnabled(true);
+	ui->tableViewUsers->update();
 }
 
 void FormLibraryEditor::modelUserCommit()
@@ -282,6 +283,8 @@ void FormLibraryEditor::diffDelete()
 	if (ui->listViewDiffucalties->currentIndex().isValid()) {
 		modelDiffucalty->removeRow(ui->listViewDiffucalties->currentIndex().row());
 	}
+	ui->actionDifficultyCommit->setEnabled(true);
+	ui->listViewDiffucalties->update();
 }
 
 void FormLibraryEditor::competitionTypeCommit()
@@ -419,7 +422,7 @@ void FormLibraryEditor::pageChanged( const int& page )
 	if (page == ui->stackedWidget->indexOf(ui->pageCompetitonTypes)) {
 		
 	} else if (page == ui->stackedWidget->indexOf(ui->pageClimbingDifficulty)) {
-		
+		modelDiffucalty->sort(modelDiffucalty->fieldIndex("label"), Qt::AscendingOrder);		
 	} else if (page == ui->stackedWidget->indexOf(ui->pageSportRanges)) {
 		
 	} else if (page == ui->stackedWidget->indexOf(ui->pageTeams)) {
