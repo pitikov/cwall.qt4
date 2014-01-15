@@ -91,7 +91,7 @@ void CWallManager::db_connect(bool is_connect)
 						User::current(ui_auth->comboBox->itemData(ui_auth->comboBox->currentIndex()).toInt());
 						db_open_success();
 					} else {
-						QMessageBox::warning(this, dialog_auth.windowTitle(), tr("Uncorrect password"));
+						QMessageBox::warning(this, dialog_auth.windowTitle(), tr("Incorrect password"));
 						cwallbase.close();
 						is_connect = false;
 					}
@@ -103,7 +103,7 @@ void CWallManager::db_connect(bool is_connect)
 				}
 			} else {
 				is_connect = false;
-				QMessageBox::critical(this, windowTitle(), tr("Uncorrect or damaged structure in default database") + ": " + user +"@" + base, QMessageBox::Close);
+				QMessageBox::critical(this, windowTitle(), tr("Incorrect or damaged structure in default database") + ": " + user +"@" + base, QMessageBox::Close);
 			}
 		}
 	} else {
@@ -171,6 +171,8 @@ void CWallManager::db_auth_validate(int index)
 		if (ui_auth->comboBox->itemData(index).toInt() > 0) is_enable = true;
 	}
 	ui_auth->pushButtonLogin->setEnabled(is_enable);
+	ui_auth->lineEdit->clear();
+	ui_auth->lineEdit->setEnabled(is_enable);
 }
 
 #include "cwallmanager.moc"
