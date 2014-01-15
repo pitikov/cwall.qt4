@@ -62,7 +62,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="pageCompetitonTypes">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -127,6 +127,12 @@
          <property name="contextMenuPolicy">
           <enum>Qt::ActionsContextMenu</enum>
          </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
         </widget>
        </item>
       </layout>
@@ -134,7 +140,7 @@
      <widget class="QWidget" name="pageCompetitors">
       <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <layout class="QHBoxLayout" name="horizontalLayoutCompetitorSearch">
          <item>
           <widget class="QLabel" name="labelFind">
            <property name="text">
@@ -160,10 +166,29 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QToolButton" name="toolButtonSearch">
+           <property name="toolTip">
+            <string>Find competitors</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset theme="edit-find">
+             <normaloff/>
+            </iconset>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
-        <widget class="QTableView" name="tableViewCompetitors"/>
+        <widget class="QTableView" name="tableViewCompetitors">
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QWidget" name="formWidgetCompetitor" native="true">
@@ -202,7 +227,14 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QDateEdit" name="dateEditCompetitorDob"/>
+           <widget class="QDateEdit" name="dateEditCompetitorDob">
+            <property name="displayFormat">
+             <string>M/d/yyyy</string>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item row="2" column="1">
            <widget class="QComboBox" name="comboBoxCompetitorGender"/>
@@ -237,9 +269,9 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QHBoxLayout" name="horizontalLayoutCompetitior">
          <item>
-          <spacer name="horizontalSpacer_4">
+          <spacer name="horizontalSpacerCompetitorLeft">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -264,7 +296,7 @@
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_3">
+          <spacer name="horizontalSpacerCompetitorRight">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -355,7 +387,7 @@
           <item row="3" column="0" colspan="2">
            <layout class="QHBoxLayout" name="horizontalLayoutUserEdit">
             <item>
-             <spacer name="horizontalSpacer">
+             <spacer name="horizontalSpacerUserLeft">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -380,7 +412,7 @@
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_2">
+             <spacer name="horizontalSpacerUserRight">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -520,6 +552,41 @@
     <string>Reload competition types</string>
    </property>
   </action>
+  <action name="actionTeamAdd">
+   <property name="icon">
+    <iconset theme="list-add"/>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </action>
+  <action name="actionTeamDelete">
+   <property name="icon">
+    <iconset theme="edit-delete"/>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="toolTip">
+    <string>Team delete</string>
+   </property>
+  </action>
+  <action name="actionTeamCommit">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
+   <property name="text">
+    <string>Commit</string>
+   </property>
+  </action>
+  <action name="actionTeamUpdate">
+   <property name="icon">
+    <iconset theme="edit-undo"/>
+   </property>
+   <property name="text">
+    <string>Update</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>lineEditCompetitorName</tabstop>
@@ -566,8 +633,8 @@
    <slot>currentUserChanged(QModelIndex)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>33</y>
+     <x>253</x>
+     <y>16</y>
     </hint>
     <hint type="destinationlabel">
      <x>316</x>
@@ -582,8 +649,8 @@
    <slot>currentUserChanged(QModelIndex)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>33</y>
+     <x>253</x>
+     <y>16</y>
     </hint>
     <hint type="destinationlabel">
      <x>316</x>
@@ -598,8 +665,8 @@
    <slot>userAdd()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>33</y>
+     <x>244</x>
+     <y>31</y>
     </hint>
     <hint type="destinationlabel">
      <x>453</x>
@@ -614,8 +681,8 @@
    <slot>userDataValidate(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>33</y>
+     <x>249</x>
+     <y>23</y>
     </hint>
     <hint type="destinationlabel">
      <x>633</x>
@@ -630,8 +697,8 @@
    <slot>userDataValidate(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>33</y>
+     <x>249</x>
+     <y>25</y>
     </hint>
     <hint type="destinationlabel">
      <x>635</x>
@@ -646,8 +713,8 @@
    <slot>userDataValidate(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>33</y>
+     <x>249</x>
+     <y>28</y>
     </hint>
     <hint type="destinationlabel">
      <x>633</x>
@@ -822,12 +889,156 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>614</x>
+     <x>584</x>
      <y>24</y>
     </hint>
     <hint type="destinationlabel">
      <x>553</x>
      <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditCompetitorSerach</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>competitorFind(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>457</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>633</x>
+     <y>31</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditCompetitorName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>competitorFind(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>517</x>
+     <y>227</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>633</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonCompetitorAdd</sender>
+   <signal>clicked()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>competitorAdd()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>424</x>
+     <y>364</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>156</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButtonSearch</sender>
+   <signal>clicked()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>competitorMask()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>614</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>633</x>
+     <y>77</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTeamAdd</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>teamAdd()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTeamCommit</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>teamCommit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTeamDelete</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>teamDelete()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTeamUpdate</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>teamUpdate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listWidgetCatalog</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>pageChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
     </hint>
    </hints>
   </connection>
@@ -847,5 +1058,16 @@
   <slot>currentDiffCanged(QModelIndex)</slot>
   <slot>competitionTypeCommit()</slot>
   <slot>competitionTypeUpdate()</slot>
+  <slot>competitorAdd()</slot>
+  <slot>competitorDelete()</slot>
+  <slot>competitorCommit()</slot>
+  <slot>competitorUpdate()</slot>
+  <slot>competitorFind(QString)</slot>
+  <slot>competitorMask()</slot>
+  <slot>teamAdd()</slot>
+  <slot>teamDelete()</slot>
+  <slot>teamUpdate()</slot>
+  <slot>teamCommit()</slot>
+  <slot>pageChanged(int)</slot>
  </slots>
 </ui>

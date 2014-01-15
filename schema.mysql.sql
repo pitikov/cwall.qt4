@@ -84,8 +84,9 @@ insert into `lib_competitiontype` (`prefix`, `title`, `vrvscode`, `description`)
 
 create table `lib_team` (
 	`gid` integer primary key auto_increment,
-	`title` varchar(50) not null unique,
-	`region` varchar(50) default null
+	`title` varchar(50) not null,
+	`region` varchar(50) default null,
+	constraint `unq_team` unique (`title`, `region`)
 ) engine = InnoDb comment 'Sport team';
 insert into `lib_team`(`title`) values ('лично');
 

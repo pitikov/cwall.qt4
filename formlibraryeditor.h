@@ -22,6 +22,7 @@ public:
 
 private slots:
 	void modelChange();
+	void pageChanged( const int& page );
 	void currentUserChanged(const QModelIndex &index );
 	void userAdd();
 	void userDataValidate(const QString &arg);
@@ -36,6 +37,15 @@ private slots:
 	void diffDelete();
 	void competitionTypeCommit();
 	void competitionTypeUpdate();
+	void competitorFind(const QString &index);
+	void competitorAdd();
+	void competitorDel();
+	void competitorMask();
+	void teamAdd();
+	void teamDelete();
+	void teamUpdate();
+	void teamCommit();
+	void currentTeamChanged(const QModelIndex &index);
 
 private:
 	Ui::FormLibraryEditor *ui;
