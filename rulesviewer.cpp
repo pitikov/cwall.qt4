@@ -13,8 +13,6 @@ FormRulesViewer::FormRulesViewer(QWidget* parent, Qt::WindowFlags flags )
 	, doc(Poppler::Document::load(DialogConfigure::cfg()->value("PDF_Files", "rules").toString()))
 	, scene(new QGraphicsScene(this))
 	, current_page(1)
-	, key_ctrl_active(false)
-	, key_alt_active(false)
 {
 	if (!doc) {
 		close();
@@ -48,6 +46,7 @@ FormRulesViewer::~FormRulesViewer()
 
 void FormRulesViewer::setPage(const int& page)
 {
+	if ((page > 0)&(page <= doc->numPages()))
 	ui->graphicsView->centerOn(scene->items().at(doc->numPages() - page));
 }
 
@@ -92,8 +91,15 @@ bool FormRulesViewer::eventFilter(QObject* sender, QEvent* event)
 				break;
 			case QEvent::KeyPress :
 				switch (((QKeyEvent*)event)->key()) {
-					case Qt::Key_Alt :
-						key_alt_active = true;
+					case Qt::Key_PageDown :
+						ui->spinBoxCurrentPage->setValue(ui->spinBoxCurrentPage->value()+1);
+						is_recived = true;
+						event->accept();
+						break;
+					case Qt::Key_PageUp :
+						ui->spinBoxCurrentPage->setValue(ui->spinBoxCurrentPage->value()-1);
+						is_recived = true;
+						event->accept();
 						break;
 					default:
 						break;
@@ -101,19 +107,13 @@ bool FormRulesViewer::eventFilter(QObject* sender, QEvent* event)
 				break;
 			case QEvent::KeyRelease :
 				switch (((QKeyEvent*)event)->key()) {
-					case Qt::Key_Control :
-						key_ctrl_active = false;
-						return true;
-						break;
-					case Qt::Key_Alt :
-						key_alt_active = false;
-						break;
+
 					default:
 						break;
 				}
 				break;
 			default:
-				//qDebug() << event->type();
+				qDebug() << event->type();
 				break;
 		}
 	}

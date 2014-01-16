@@ -29,8 +29,6 @@ private:
 	Poppler::Document *doc;
 	QGraphicsScene *scene;
 	int current_page;
-	bool key_ctrl_active;
-	bool key_alt_active;
 	bool eventFilter(QObject *sender, QEvent *event);
 	
 	void pageNum(int pos_x, int pos_y);
