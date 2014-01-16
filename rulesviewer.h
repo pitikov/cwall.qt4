@@ -18,8 +18,11 @@ public:
 
 private slots:
 	void setPage(const int &page);
-	void pageResize(const int &page);
+	void pageResize(const int& scale);
 	void textSearch(const QString& text, Poppler::Page::SearchDirection direct = Poppler::Page::NextResult);
+	void findPrevious();
+	void findNext();
+	void startSearch();
 	
 private:
 	Ui::FormRulesViewer *ui;
@@ -29,6 +32,8 @@ private:
 	bool key_ctrl_active;
 	bool key_alt_active;
 	bool eventFilter(QObject *sender, QEvent *event);
+	
+	void pageNum(int pos_x, int pos_y);
 };
 
 #endif // RULESVIEWER_H

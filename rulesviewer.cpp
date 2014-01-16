@@ -5,6 +5,7 @@
 #include <QGraphicsItem>
 #include <QCursor>
 #include <QKeyEvent>
+#include <QPoint>
 
 FormRulesViewer::FormRulesViewer(QWidget* parent, Qt::WindowFlags flags )
 	: QWidget(parent, flags)
@@ -20,17 +21,25 @@ FormRulesViewer::FormRulesViewer(QWidget* parent, Qt::WindowFlags flags )
 	}
 	ui->setupUi(this);
 	ui->graphicsView->setScene(scene);
-
-	setPage(current_page);
-
-	ui->spinBoxCurrentPage->setMaximum(doc->numPages()-1);
 	ui->lineEditPageLimit->setText(QString::number(doc->numPages()));
+	ui->spinBoxCurrentPage->setMaximum(doc->numPages());
 
 	setWindowTitle(tr("Competition rules"));
 
 	connect(ui->spinBoxCurrentPage, SIGNAL(valueChanged(int)), SLOT(setPage(int)));
+	
+	scene->setBackgroundBrush(QBrush(Qt::gray ,Qt::SolidPattern));
 	ui->graphicsView->installEventFilter(this);
-	qDebug() << doc->metadata();
+	
+	int pos_y = 0;
+	
+	for (int id = 0; id < doc->numPages(); id++) {
+		QPixmap pixmap = QPixmap::fromImage(doc->page(id)->renderToImage(physicalDpiX(), physicalDpiY()));
+		QGraphicsItem *item = scene->addPixmap(pixmap);
+		item->setPos( 20, pos_y );
+		pos_y += (pixmap.height() + 20);
+		scene->update();
+	}
 }
 
 FormRulesViewer::~FormRulesViewer()
@@ -39,22 +48,13 @@ FormRulesViewer::~FormRulesViewer()
 
 void FormRulesViewer::setPage(const int& page)
 {
-	current_page = page-1;
-	scene->clear();
-	delete scene;
-	scene = new QGraphicsScene(this);
-	//scene->setSceneRect(-400,-600,0,0);
-	ui->graphicsView->setScene(scene);
-	scene->setBackgroundBrush(QBrush(Qt::gray ,Qt::SolidPattern));
-	
-	int scale_x = (ui->spinBoxPercent->value() * physicalDpiX())/100;
-	int scale_y = (ui->spinBoxPercent->value() * physicalDpiY())/100;
-	scene->addPixmap(QPixmap::fromImage(doc->page(current_page)->renderToImage(scale_x, scale_y)));
+	ui->graphicsView->centerOn(scene->items().at(doc->numPages() - page));
 }
 
-void FormRulesViewer::pageResize(const int& page)
+void FormRulesViewer::pageResize(const int& scale)
 {
-	setPage(current_page+1);
+	qreal zoom = (qreal)scale/100;
+	//ui->graphicsView->scale(zoom, zoom);
 }
 
 void FormRulesViewer::textSearch(const QString& text, Poppler::Page::SearchDirection direct)
@@ -63,9 +63,7 @@ void FormRulesViewer::textSearch(const QString& text, Poppler::Page::SearchDirec
 		int page = current_page;
 		while (page < doc->numPages()) {
 			QRectF localtion;
-	/*		if (doc->page(page)->search(text, localtion, Poppler::Page::NextResult, Poppler::Page::CaseInsensitive)) {
-				
-			}*/
+
 			page++;
 		}
 		// TODO QMessageBox::question for search from start
@@ -77,20 +75,20 @@ bool FormRulesViewer::eventFilter(QObject* sender, QEvent* event)
 {
 	bool ret = true;
 	bool is_recived = false;
+	int pos_x, pos_y;
 	if (sender == ui->graphicsView) {
 		switch (event->type()) {
 			case QEvent::Wheel :
-				if (key_ctrl_active) {
-					int delta = ((QWheelEvent*)event)->delta()>0?10:-10;
-					int scale = ui->spinBoxPercent->value() + delta;
-					ui->spinBoxPercent->setValue(scale);
-					is_recived = true;
-				} else if (key_alt_active) {
-					
-				} else {
-					qDebug();
-				}
+				pos_x = ((QWheelEvent*)event)->x();
+				pos_y = ((QWheelEvent*)event)->y();
+				pageNum(pos_x, pos_y);
 				event->ignore();
+				break;
+			case QEvent::HoverMove :
+        pos_x = ((QHoverEvent*)event)->pos().x();
+				pos_y = ((QHoverEvent*)event)->pos().y();
+				
+				pageNum(pos_x, pos_y);
 				break;
 			case QEvent::KeyPress :
 				switch (((QKeyEvent*)event)->key()) {
@@ -115,7 +113,7 @@ bool FormRulesViewer::eventFilter(QObject* sender, QEvent* event)
 				}
 				break;
 			default:
-				qDebug() << event->type();
+				//qDebug() << event->type();
 				break;
 		}
 	}
@@ -123,5 +121,32 @@ bool FormRulesViewer::eventFilter(QObject* sender, QEvent* event)
 	return ret;
 }
 
+void FormRulesViewer::findNext()
+{
+	qWarning() << "Implict me please" << __func__;
+}
+
+void FormRulesViewer::findPrevious()
+{
+	qWarning() << "Implict me please" << __func__;
+}
+
+void FormRulesViewer::startSearch()
+{
+	qWarning() << "Implict me please" << __func__;
+}
+
+void FormRulesViewer::pageNum(int pos_x, int pos_y)
+{
+	for (int id = 0; id < ui->graphicsView->items(pos_x, pos_y).count(); id++) {
+		for (int j = 0; j < scene->items().count(); j++) {
+			if (ui->graphicsView->items(pos_x, pos_y).at(id) == scene->items().at(j)) {
+				ui->spinBoxCurrentPage->blockSignals(true);
+				ui->spinBoxCurrentPage->setValue(doc->numPages()-j);
+				ui->spinBoxCurrentPage->blockSignals(false);
+			}
+		}
+	}
+}
 
 #include "rulesviewer.moc"
