@@ -17,5 +17,14 @@ qt4_wrap_ui(cwall_FORMS ${cwall_UI})
 add_executable(cwall ${cwall_SRCS} ${cwall_FORMS})
 target_link_libraries(cwall ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTSQL_LIBRARY} -lpoppler-qt4)
 
+
+set (kgen_SRCS kgen_main.cpp kgen.cpp)
+set (kgen_UI kgen.ui)
+qt4_wrap_ui(kgen_FORM ${kgen_UI})
+qt4_automoc(${kgen_SRCS})
+add_executable(kgen ${kgen_SRCS} ${kgen_FORM})
+target_link_libraries(kgen ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
+
+
 install_files(${SQL_PATH} ${SQL_FILES})
 install_files(${PDF_PATH} ${PDF_FILES})
