@@ -7,6 +7,8 @@ set(SQL_FILES schema.mysql.sql)
 set(SQL_PATH /share/cwall/sql)
 set(PDF_FILES rules2012.pdf)
 set(PDF_PATH /share/cwall/pdf)
+set(IMG_FILES splash.jpg)
+set(IMG_PATH /share/cwall/img)
 
 set(cwall_UI cwall_manager.ui dialog_database.ui dialog_configure.ui dialog_db_create.ui dialog_hostname.ui dialog_rebuild.ui dialog_auth.ui form_library_editor.ui dialog_user_password.ui form_rules_viewer.ui)
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
@@ -28,3 +30,4 @@ target_link_libraries(kgen ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 
 install_files(${SQL_PATH} ${SQL_FILES})
 install_files(${PDF_PATH} ${PDF_FILES})
+install_files(${IMG_PATH} ${IMG_FILES})
