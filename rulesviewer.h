@@ -24,9 +24,9 @@ private slots:
 
 private:
 	Ui::FormRulesViewer *ui;
-	static int pX, pY;
+//	static int pX, pY;
 
-	int current_page;
+	static int current_page;
 	bool eventFilter(QObject *sender, QEvent *event);
 	void pageNum(int pos_x, int pos_y);
 };

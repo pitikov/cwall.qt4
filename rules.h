@@ -21,7 +21,6 @@ private:
 	Poppler::Document *doc_;
 
 	Rules( QObject *parent );
-
 };
 
 #endif // RULES_H

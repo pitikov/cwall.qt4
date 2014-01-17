@@ -6,15 +6,17 @@
 #include <QCursor>
 #include <QKeyEvent>
 #include <QPoint>
+#include <QSize>
 #include "rules.h"
 
-int FormRulesViewer::pX = 0;
-int FormRulesViewer::pY = 0;
+// int FormRulesViewer::pX = 0;
+// int FormRulesViewer::pY = 0;
+int FormRulesViewer::current_page = 1;
 
 FormRulesViewer::FormRulesViewer(QWidget* parent, Qt::WindowFlags flags )
 	: QWidget(parent, flags)
 	, ui(new Ui::FormRulesViewer)
-	, current_page(1)
+//	, current_page(1)
 {
 	if (Rules::sample()->doc()) {
 		close();
@@ -29,7 +31,9 @@ FormRulesViewer::FormRulesViewer(QWidget* parent, Qt::WindowFlags flags )
 	connect(ui->spinBoxCurrentPage, SIGNAL(valueChanged(int)), SLOT(setPage(int)));
 
 	ui->graphicsView->installEventFilter(this);
-	ui->graphicsView->centerOn(pX, pY);
+	ui->graphicsView->adjustSize();
+	setPage(current_page);
+// 	ui->graphicsView->centerOn(pX, pY);
 }
 
 FormRulesViewer::~FormRulesViewer()
@@ -38,29 +42,18 @@ FormRulesViewer::~FormRulesViewer()
 
 void FormRulesViewer::setPage(const int& page)
 {
-	if ((page > 0)&(page <= Rules::sample()->doc()->numPages()))
+	if ((page > 0)&(page <= Rules::sample()->doc()->numPages())) {
 		ui->graphicsView->centerOn(Rules::sample()->items().at(Rules::sample()->doc()->numPages() - page));
+		current_page = page;
+	}
 }
 
 void FormRulesViewer::pageResize(const int& scale)
 {
-	qreal zoom = (qreal)scale/100;
-	//ui->graphicsView->scale(zoom, zoom);
+	ui->graphicsView->resetMatrix();
+	
+	ui->graphicsView->scale(((qreal)scale)/100, ((qreal)scale)/100);
 }
-/*
-void FormRulesViewer::textSearch(const QString& text, Poppler::Page::SearchDirection direct)
-{
-	if (!text.isEmpty()) {
-		int page = current_page;
-		while (page < Rules::sample()->doc()->numPages()) {
-			QRectF localtion;
-
-			page++;
-		}
-		// TODO QMessageBox::question for search from start
-
-	}
-}*/
 
 bool FormRulesViewer::eventFilter(QObject* sender, QEvent* event)
 {
@@ -78,7 +71,6 @@ bool FormRulesViewer::eventFilter(QObject* sender, QEvent* event)
 			case QEvent::HoverMove :
         pos_x = ((QHoverEvent*)event)->pos().x();
 				pos_y = ((QHoverEvent*)event)->pos().y();
-
 				pageNum(pos_x, pos_y);
 				break;
 			case QEvent::KeyPress :
@@ -90,6 +82,11 @@ bool FormRulesViewer::eventFilter(QObject* sender, QEvent* event)
 						break;
 					case Qt::Key_PageUp :
 						ui->spinBoxCurrentPage->setValue(ui->spinBoxCurrentPage->value()-1);
+						is_recived = true;
+						event->accept();
+						break;
+					case Qt::Key_Home :
+						ui->spinBoxCurrentPage->setValue(1);
 						is_recived = true;
 						event->accept();
 						break;
@@ -133,8 +130,9 @@ void FormRulesViewer::pageNum(int pos_x, int pos_y)
 	for (int id = 0; id < ui->graphicsView->items(pos_x, pos_y).count(); id++) {
 		for (int j = 0; j < Rules::sample()->items().count(); j++) {
 			if (ui->graphicsView->items(pos_x, pos_y).at(id) == Rules::sample()->items().at(j)) {
+				current_page = Rules::sample()->doc()->numPages()-j;
 				ui->spinBoxCurrentPage->blockSignals(true);
-				ui->spinBoxCurrentPage->setValue(Rules::sample()->doc()->numPages()-j);
+				ui->spinBoxCurrentPage->setValue(current_page);
 				ui->spinBoxCurrentPage->blockSignals(false);
 			}
 		}
