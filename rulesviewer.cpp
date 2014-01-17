@@ -122,7 +122,8 @@ void FormRulesViewer::findPrevious()
 
 void FormRulesViewer::startSearch()
 {
-	qWarning() << "Implict me please" << __func__;
+	//qWarning() << "Implict me please" << __func__;
+	Rules::sample()->search (ui->lineEditFind->text());
 }
 
 void FormRulesViewer::pageNum(int pos_x, int pos_y)
