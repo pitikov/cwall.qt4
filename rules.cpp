@@ -23,6 +23,7 @@ Rules::Rules( QObject *parent )
 
 	for (int id = 0; id < doc()->numPages(); id++) {
 		// TODO need use real phisical device DPI
+		
 		QPixmap pixmap = QPixmap::fromImage(doc()->page(id)->renderToImage(150, 150));
 		QGraphicsItem *item = addPixmap(pixmap);
 		item->setPos( 20, pos_y );
