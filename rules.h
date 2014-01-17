@@ -18,19 +18,23 @@ public:
 	~Rules();
 	Poppler::Document *doc();
 	QString searchText() const;
-	QList<QGraphicsRectItem*> search(const QString &str);
-	//QGraphicsRectItem* searchNext(const QString &str);
-	//QGraphicsRectItem* searchPrevious(const QString &str);
+	QList<QGraphicsRectItem*> *search(const QString& str);
 	void searchClean();
-	QString searched;
+	QList<QGraphicsItem*> *pager();
+	QQueue<QGraphicsRectItem*> *searched();
+	int currentResult() const;
+	bool setCurrentResult(const int &number);
 
 private:
 	static Rules *self_;
 	Poppler::Document *doc_;
+	QList<QGraphicsItem*> list_pages;
 	QQueue<QGraphicsRectItem*> artefacts;
+	QString searched_;
+	int currentResult_;
 
 	Rules( QObject *parent );
-	
+
 };
 
 #endif // RULES_H

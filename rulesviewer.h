@@ -2,6 +2,7 @@
 #define RULESVIEWER_H
 
 #include <QWidget>
+#include <QGraphicsRectItem>
 
 #include <ui_form_rules_viewer.h>
 
@@ -24,8 +25,6 @@ private slots:
 
 private:
 	Ui::FormRulesViewer *ui;
-//	static int pX, pY;
-
 	static int current_page;
 	bool eventFilter(QObject *sender, QEvent *event);
 	void pageNum(int pos_x, int pos_y);

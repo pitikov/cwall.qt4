@@ -3,6 +3,7 @@
 #include <QGraphicsItem>
 #include <QPoint>
 #include <QDebug>
+#include <QDesktopWidget>
 
 Rules *Rules::self_ = NULL;
 
@@ -15,17 +16,22 @@ Rules* Rules::sample(QObject* parent)
 Rules::Rules( QObject *parent )
 : QGraphicsScene( parent )
 , doc_(Poppler::Document::load(DialogConfigure::cfg()->value("PDF_Files", "rules").toString()))
+, list_pages(QList<QGraphicsItem*>())
 , artefacts(QQueue<QGraphicsRectItem*>())
-, searched(QString())
+, searched_(QString())
+, currentResult_(-1)
 {
 	setBackgroundBrush(QBrush(Qt::gray ,Qt::SolidPattern));
 	int pos_y = 0;
 
 	for (int id = 0; id < doc()->numPages(); id++) {
 		// TODO need use real phisical device DPI
-		
-		QPixmap pixmap = QPixmap::fromImage(doc()->page(id)->renderToImage(150, 150));
+
+		QDesktopWidget *dstp = QApplication::desktop();
+
+		QPixmap pixmap = QPixmap::fromImage(doc()->page(id)->renderToImage(dstp->physicalDpiX()*1.5, dstp->physicalDpiY()*1.5));
 		QGraphicsItem *item = addPixmap(pixmap);
+		list_pages.append(item);
 		item->setPos( 20, pos_y );
 		pos_y += (pixmap.height() + 20);
 	}
@@ -36,51 +42,80 @@ Rules::~Rules()
 	self_ = NULL;
 }
 
-QList< QGraphicsRectItem* > Rules::search(const QString& str)
+QList< QGraphicsRectItem* > *Rules::search(const QString& str)
 {
-	qDebug() << "****" << __func__ << "start" << "****";
+	// TODO In this moment use magic number 100 and 2. Fix this problemm
+	qreal factorX = 100/QApplication::desktop()->physicalDpiX()*2;
+	qreal factorY = 100/QApplication::desktop()->physicalDpiY()*2;
 	searchClean();
-	searched = str;
+	searched_ = str;
+	artefacts.clear();
 	for (int page=0; page < doc()->numPages(); page++) {
-		qDebug() << "page no" << page;
-		QPointF page_pos = items().at(doc()->numPages()-(page+1))->pos();
-		qDebug() << "get page position";
-		QList<QRectF>art_list = doc()->page(page)->search(str, Poppler::Page::CaseInsensitive, Poppler::Page::Rotate0);
-		qDebug() << "finded" << art_list.count();
-		for (int id = 0; id < art_list.count(); id++) {
-			QRectF text = art_list.at(id);
-			qDebug() << "text including" << id;
-			artefacts.enqueue(addRect(text.x()+page_pos.x(), text.y()+page_pos.y(), text.width(), text.height(), QPen(Qt::green), QBrush(Qt::green, Qt::Dense4Pattern)));
-			qDebug() << "adding success";
-			qDebug() << "--------------";
+		QList<QRectF> list_words = doc()->page(page)->search(str, Poppler::Page::CaseInsensitive, Poppler::Page::Rotate0);
+
+		for (int wid = 0; wid < list_words.count(); wid++) {
+			QGraphicsRectItem *item = addRect(pager()->at(page)->pos().x() + list_words.at(wid).x()*factorX, pager()->at(page)->pos().y() + list_words.at(wid).y()*factorY, list_words.at(wid).width()*factorX, list_words.at(wid).height()*factorY, QPen(Qt::yellow), QBrush(Qt::yellow, Qt::Dense4Pattern));
+			artefacts.enqueue(item);
 		}
-		qDebug() << "----- end of page ------";
 	}
-	qDebug() << "=========== end of book =============";
-	qDebug() << "****"<< __func__ << "complit"<< "****";
-	return artefacts;
+	return &artefacts;
 }
 
 void Rules::searchClean()
 {
-	qDebug() << "****" << __func__ << "start" << "****";
 	QGraphicsRectItem *item;
 	while (!artefacts.isEmpty()) {
-		items().removeOne(artefacts.dequeue());
+		removeItem(artefacts.dequeue());
 	}
-	searched.clear();
+	searched_.clear();
+	currentResult_ = -1;
 	update();
-	qDebug() << "****"<< __func__ << "complit"<< "****";
 }
 
 QString Rules::searchText() const
 {
-	return searched;
+	return searched_;
 }
 
 Poppler::Document* Rules::doc()
 {
 	return doc_;
+}
+
+QList< QGraphicsItem* >* Rules::pager()
+{
+	return &list_pages;
+}
+
+QQueue< QGraphicsRectItem* >* Rules::searched()
+{
+	return &artefacts;
+}
+
+int Rules::currentResult() const
+{
+	return currentResult_;
+}
+
+bool Rules::setCurrentResult(const int& number)
+{
+	if (number < 0) {
+		if ((artefacts.count() > currentResult_) & (currentResult_ >=0 )) {
+			artefacts.at(currentResult_)->setBrush(QBrush(Qt::yellow, Qt::Dense4Pattern));
+			artefacts.at(currentResult_)->setPen(QPen(Qt::yellow));
+			currentResult_ = -1;
+		}
+		return true;
+	} else if ((number >= 0) & (number < artefacts.count())) {
+		if (currentResult_ >= 0) {
+			artefacts.at(currentResult_)->setBrush(QBrush(Qt::yellow, Qt::Dense4Pattern));
+			artefacts.at(currentResult_)->setPen(QPen(Qt::yellow));
+		}
+		currentResult_ = number;
+		artefacts.at(currentResult_)->setBrush(QBrush(Qt::red, Qt::Dense6Pattern));
+		artefacts.at(currentResult_)->setPen(QPen(Qt::red));
+		return true;
+	} else return false;
 }
 
 #include "rules.moc"
