@@ -15,25 +15,27 @@ Rules* Rules::sample(QObject* parent)
 
 Rules::Rules( QObject *parent )
 : QGraphicsScene( parent )
-, doc_(Poppler::Document::load(DialogConfigure::cfg()->value("PDF_Files", "rules").toString()))
+, doc_(Poppler::Document::load(DialogConfigure::cfg()->value("PDF_Files", "rules", "/usr/share/cwall/pdf/rules2012.pdf").toString()))
 , list_pages(QList<QGraphicsItem*>())
 , artefacts(QQueue<QGraphicsRectItem*>())
 , searched_(QString())
 , currentResult_(-1)
 {
-	setBackgroundBrush(QBrush(Qt::gray ,Qt::SolidPattern));
-	int pos_y = 0;
-
-	for (int id = 0; id < doc()->numPages(); id++) {
-		// TODO need use real phisical device DPI
-
-		QDesktopWidget *dstp = QApplication::desktop();
-
-		QPixmap pixmap = QPixmap::fromImage(doc()->page(id)->renderToImage(dstp->physicalDpiX()*1.5, dstp->physicalDpiY()*1.5));
-		QGraphicsItem *item = addPixmap(pixmap);
-		list_pages.append(item);
-		item->setPos( 20, pos_y );
-		pos_y += (pixmap.height() + 20);
+	if (doc()) {
+		setBackgroundBrush(QBrush(Qt::gray ,Qt::SolidPattern));
+		int pos_y = 0;
+		
+		for (int id = 0; id < doc()->numPages(); id++) {
+			// TODO need use real phisical device DPI
+			
+			QDesktopWidget *dstp = QApplication::desktop();
+			
+			QPixmap pixmap = QPixmap::fromImage(doc()->page(id)->renderToImage(dstp->physicalDpiX()*1.5, dstp->physicalDpiY()*1.5));
+			QGraphicsItem *item = addPixmap(pixmap);
+			list_pages.append(item);
+			item->setPos( 20, pos_y );
+			pos_y += (pixmap.height() + 20);
+		}
 	}
 }
 
