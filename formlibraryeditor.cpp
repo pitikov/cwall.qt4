@@ -125,6 +125,13 @@ FormLibraryEditor::FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags)
 		ui->comboBoxCompetitorTeam->addItem(modelTeams->record(id).value("title").toString() + " (" + modelTeams->record(id).value("region").toString() + ")", modelTeams->record(id).value("gid").toInt());
 	}
 	modelCompetitors->setEditStrategy(QSqlTableModel::OnManualSubmit);
+	ui->tableViewCompetitors->addAction(ui->actionCompetitorCommit);
+	ui->tableViewCompetitors->addAction(ui->actionComtetitorUpdate);
+	ui->tableViewCompetitors->addAction(actionSeparator);
+	ui->tableViewCompetitors->addAction(ui->actionCompetitorDelete);
+	ui->actionCompetitorDelete->setDisabled(true);
+	ui->actionCompetitorCommit->setDisabled(true);
+	connect(modelCompetitors, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelChange()));
 
 	modelUser->setTable("site_user");
 	ui->tableViewUsers->setModel(modelUser);
@@ -255,6 +262,7 @@ void FormLibraryEditor::modelChange()
 	if (sender()==modelCompetitionTypes) ui->actionCTypeCommit->setEnabled(true);
 	if (sender()==modelTeams) ui->actionTeamCommit->setEnabled(true);
 	if (sender()==modelAgeGroups) ui->actionAgeGroupCommit->setEnabled(true);
+	if (sender()==modelCompetitors) ui->actionCompetitorCommit->setEnabled(true);
 }
 
 void FormLibraryEditor::modelDifficultyCommit()
@@ -310,29 +318,14 @@ void FormLibraryEditor::competitionTypeUpdate()
 void FormLibraryEditor::competitorAdd()
 {
 	int row = modelCompetitors->rowCount();
-	QSqlRecord new_competitor;
 
-	QSqlField f_uid("uid");
-	QSqlField f_name("name");
-	QSqlField f_dob("dob");
-	QSqlField f_gender("gender");
-	QSqlField f_range("range");
-	QSqlField f_team("team");
-	f_uid.setAutoValue(true);
-	f_name.setValue(ui->lineEditCompetitorName->text());
-	f_gender.setValue(ui->comboBoxCompetitorGender->currentIndex()+1);
-	f_range.setValue(modelRanges->record(ui->comboBoxCompetitorRange->currentIndex()).value("id"));
-	f_team.setValue(modelTeams->record(ui->comboBoxCompetitorTeam->currentIndex()).value("gid"));
+	modelCompetitors->insertRow(row - 1);
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("name")), ui->lineEditCompetitorName->text());
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("dob")), ui->dateEditCompetitorDob->date());
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("gender")), ui->comboBoxCompetitorGender->currentIndex()+1);
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("team")), ui->comboBoxCompetitorTeam->currentIndex());
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("range")), ui->comboBoxCompetitorRange->currentIndex());
 
-	new_competitor.append(f_uid);
-	new_competitor.append(f_name);
-	new_competitor.append(f_dob);
-	new_competitor.append(f_gender);
-	new_competitor.append(f_range);
-	new_competitor.append(f_team);
-	// FIXME Not inserting record to competitor list model
-	if (modelCompetitors->insertRecord(-1, new_competitor)) {
-	} else qDebug() << "Record inserting error";
 }
 
 void FormLibraryEditor::competitorFind(const QString& index)
@@ -340,7 +333,7 @@ void FormLibraryEditor::competitorFind(const QString& index)
 	//TODO implict me
 }
 
-void FormLibraryEditor::competitorDel()
+void FormLibraryEditor::competitorDelete()
 {
 	//TODO implict me
 
@@ -349,7 +342,25 @@ void FormLibraryEditor::competitorDel()
 void FormLibraryEditor::competitorMask()
 {
 	//TODO implict me
-	
+
+}
+
+void FormLibraryEditor::competitorCommit()
+{
+	if (modelCompetitors->submitAll()) {
+		ui->actionCompetitorCommit->setDisabled(true);
+		ui->actionCompetitorDelete->setDisabled(true);
+	}
+	ui->tableViewCompetitors->update();
+}
+
+void FormLibraryEditor::competitorUpdate()
+{
+	modelCompetitors->revertAll();
+	ui->actionCompetitorCommit->setDisabled(true);
+	ui->actionCompetitorDelete->setDisabled(true);
+
+	ui->tableViewCompetitors->update();
 }
 
 void FormLibraryEditor::teamAdd()

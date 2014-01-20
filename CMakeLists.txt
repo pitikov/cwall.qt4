@@ -27,7 +27,6 @@ qt4_automoc(${kgen_SRCS})
 add_executable(kgen ${kgen_SRCS} ${kgen_FORM})
 target_link_libraries(kgen ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 
-
 install_files(${SQL_PATH} ${SQL_FILES})
 install_files(${PDF_PATH} ${PDF_FILES})
 install_files(${IMG_PATH} ${IMG_FILES})

@@ -62,7 +62,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="pageCompetitonTypes">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -554,7 +554,9 @@
   </action>
   <action name="actionTeamAdd">
    <property name="icon">
-    <iconset theme="list-add"/>
+    <iconset theme="list-add">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Add</string>
@@ -562,7 +564,9 @@
   </action>
   <action name="actionTeamDelete">
    <property name="icon">
-    <iconset theme="edit-delete"/>
+    <iconset theme="edit-delete">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Delete</string>
@@ -573,7 +577,9 @@
   </action>
   <action name="actionTeamCommit">
    <property name="icon">
-    <iconset theme="document-save"/>
+    <iconset theme="document-save">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Commit</string>
@@ -581,7 +587,9 @@
   </action>
   <action name="actionTeamUpdate">
    <property name="icon">
-    <iconset theme="edit-undo"/>
+    <iconset theme="edit-undo">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Update</string>
@@ -589,7 +597,9 @@
   </action>
   <action name="actionAgeGroupAdd">
    <property name="icon">
-    <iconset theme="list-add"/>
+    <iconset theme="list-add">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Add</string>
@@ -597,7 +607,9 @@
   </action>
   <action name="actionAgeGroupDelete">
    <property name="icon">
-    <iconset theme="edit-delete"/>
+    <iconset theme="edit-delete">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Delete</string>
@@ -605,7 +617,9 @@
   </action>
   <action name="actionAgeGroupCommit">
    <property name="icon">
-    <iconset theme="document-save"/>
+    <iconset theme="document-save">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Commit</string>
@@ -613,10 +627,45 @@
   </action>
   <action name="actionAgeGroupUpdate">
    <property name="icon">
+    <iconset theme="edit-undo">
+     <normaloff/>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Update</string>
+   </property>
+  </action>
+  <action name="actionCompetitorCommit">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
+   <property name="text">
+    <string>Commit</string>
+   </property>
+   <property name="toolTip">
+    <string>Save competitor list</string>
+   </property>
+  </action>
+  <action name="actionComtetitorUpdate">
+   <property name="icon">
     <iconset theme="edit-undo"/>
    </property>
    <property name="text">
     <string>Update</string>
+   </property>
+   <property name="toolTip">
+    <string>Update competitor list</string>
+   </property>
+  </action>
+  <action name="actionCompetitorDelete">
+   <property name="icon">
+    <iconset theme="edit-delete"/>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="toolTip">
+    <string>Commit current competitor</string>
    </property>
   </action>
  </widget>
@@ -1131,6 +1180,54 @@
     <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCompetitorCommit</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>competitorCommit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCompetitorDelete</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>competitorDelete()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionComtetitorUpdate</sender>
+   <signal>activated()</signal>
+   <receiver>FormLibraryEditor</receiver>
+   <slot>competitorUpdate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>193</y>
     </hint>
     <hint type="destinationlabel">
      <x>316</x>

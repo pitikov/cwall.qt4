@@ -39,8 +39,10 @@ private slots:
 	void competitionTypeUpdate();
 	void competitorFind(const QString &index);
 	void competitorAdd();
-	void competitorDel();
+	void competitorDelete();
 	void competitorMask();
+	void competitorCommit();
+	void competitorUpdate();
 	void teamAdd();
 	void teamDelete();
 	void teamUpdate();
