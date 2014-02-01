@@ -80,6 +80,14 @@
     <property name="title">
      <string>Window</string>
     </property>
+    <addaction name="actionWindowFullScreen"/>
+    <addaction name="separator"/>
+    <addaction name="actionWindowPrevious"/>
+    <addaction name="actionWindowNext"/>
+    <addaction name="separator"/>
+    <addaction name="actionWindowCloseActive"/>
+    <addaction name="actionWindowCloseAll"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuManager"/>
    <addaction name="menuCompetition"/>
@@ -130,9 +138,25 @@
     <bool>false</bool>
    </attribute>
   </widget>
+	<widget class="QToolBar" name="toolBarWindow">
+		<property name="windowTitle">
+			<string>toolBar</string>
+		</property>
+		<attribute name="toolBarArea">
+			<enum>TopToolBarArea</enum>
+		</attribute>
+		<attribute name="toolBarBreak">
+			<bool>false</bool>
+		</attribute>
+		<addaction name="actionWindowFullScreen"/>
+		<addaction name="separator"/>
+		<addaction name="actionWindowPrevious"/>
+		<addaction name="actionWindowNext"/>
+		<addaction name="separator"/>
+	</widget>
   <widget class="QToolBar" name="toolBarHelp">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Help</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
@@ -280,6 +304,43 @@
     <string>Library static data</string>
    </property>
   </action>
+  <action name="actionWindowPrevious">
+   <property name="text">
+    <string>Previous window</string>
+   </property>
+  </action>
+  <action name="actionWindowNext">
+   <property name="text">
+    <string>Next window</string>
+   </property>
+  </action>
+  <action name="actionWindowCloseActive">
+   <property name="text">
+    <string>Close active</string>
+   </property>
+  </action>
+  <action name="actionWindowCloseAll">
+   <property name="text">
+    <string>Close all</string>
+   </property>
+  </action>
+  <action name="actionWindowFullScreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="view-fullscreen"/>
+   </property>
+   <property name="text">
+    <string>Full screen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
@@ -299,5 +360,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionWindowFullScreen</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>CWallManager</receiver>
+   <slot>windowFullScreen(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>windowFullScreen(bool)</slot>
+ </slots>
 </ui>

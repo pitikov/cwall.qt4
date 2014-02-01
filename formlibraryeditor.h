@@ -53,6 +53,7 @@ private slots:
 	void agrpCommit();
 	void agrpUpdate();
 	void currentAgrpChanged(const QModelIndex &index);
+	void competitorFieldsPrepare();
 
 private:
 	Ui::FormLibraryEditor *ui;

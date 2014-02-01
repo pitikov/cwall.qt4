@@ -131,6 +131,7 @@ FormLibraryEditor::FormLibraryEditor(QWidget* parent, Qt::WindowFlags flags)
 	ui->tableViewCompetitors->addAction(ui->actionCompetitorDelete);
 	ui->actionCompetitorDelete->setDisabled(true);
 	ui->actionCompetitorCommit->setDisabled(true);
+	competitorFieldsPrepare();
 	connect(modelCompetitors, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelChange()));
 
 	modelUser->setTable("site_user");
@@ -319,13 +320,13 @@ void FormLibraryEditor::competitorAdd()
 {
 	int row = modelCompetitors->rowCount();
 
-	modelCompetitors->insertRow(row - 1);
-	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("name")), ui->lineEditCompetitorName->text());
-	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("dob")), ui->dateEditCompetitorDob->date());
-	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("gender")), ui->comboBoxCompetitorGender->currentIndex()+1);
-	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("team")), ui->comboBoxCompetitorTeam->currentIndex());
-	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitionTypes->fieldIndex("range")), ui->comboBoxCompetitorRange->currentIndex());
-
+	modelCompetitors->insertRecord(-1, QSqlRecord());
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitors->fieldIndex("name")), ui->lineEditCompetitorName->text());
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitors->fieldIndex("dob")), ui->spinBoxYear->value());
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitors->fieldIndex("gender")), ui->comboBoxCompetitorGender->currentIndex()==0?tr("М"):tr("Ж"));
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitors->fieldIndex("range")), ui->comboBoxCompetitorRange->itemData(ui->comboBoxCompetitorRange->currentIndex()).toInt()+1);
+	modelCompetitors->setData(modelCompetitors->index(row, modelCompetitors->fieldIndex("team")), ui->comboBoxCompetitorTeam->itemData(ui->comboBoxCompetitorTeam->currentIndex()).toInt()+1);
+	ui->tableViewCompetitors->update();
 }
 
 void FormLibraryEditor::competitorFind(const QString& index)
@@ -335,8 +336,12 @@ void FormLibraryEditor::competitorFind(const QString& index)
 
 void FormLibraryEditor::competitorDelete()
 {
-	//TODO implict me
-
+	if (ui->tableViewCompetitors->currentIndex().isValid()) {
+		modelCompetitors->removeRow(ui->tableViewCompetitors->currentIndex().row());
+		ui->tableViewCompetitors->update();
+		ui->actionCompetitorDelete->setDisabled(true);
+		ui->actionCompetitorCommit->setEnabled(true);
+	}
 }
 
 void FormLibraryEditor::competitorMask()
@@ -466,5 +471,14 @@ void FormLibraryEditor::pageChanged( const int& page )
 
 	}
 }
+
+void FormLibraryEditor::competitorFieldsPrepare()
+{
+	ui->lineEditCompetitorName->clear();
+	ui->spinBoxYear->setMaximum(QDate::currentDate().year()-4);
+	ui->spinBoxYear->setMinimum(QDate::currentDate().year()-75);
+	ui->spinBoxYear->setValue(QDate::currentDate().year()-20);
+}
+
 
 #include "formlibraryeditor.moc"

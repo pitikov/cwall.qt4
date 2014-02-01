@@ -94,7 +94,7 @@ create table `lib_competitor` (
 	`uid` integer primary key auto_increment,
 	`name` varchar(50) not null,
 	`dob` year not null,
-	`gender` enum ('М','Ж') not null,
+	`gender` enum ('М','Ж') not null default 'М',
 	`range` integer not null default 1,
 	`team` integer not null default 1,
 	key `fk_competitor_range` (`range`),

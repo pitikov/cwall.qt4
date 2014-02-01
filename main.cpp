@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 		//splash.showMessage("<h3><font color=#E20071>"+QApplication::tr("load data")+"</font></h3>");
 		//splash.finish(managerWin);
 		Rules::sample();
-		managerWin->showMaximized();
+		managerWin->show();
 		splash.close();
     return app.exec();
 }

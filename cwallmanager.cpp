@@ -182,4 +182,10 @@ void CWallManager::db_auth_validate(int index)
 	ui_auth->lineEdit->setEnabled(is_enable);
 }
 
+void CWallManager::windowFullScreen(const bool& state)
+{
+	if (state) showFullScreen(); else showNormal();
+}
+
+
 #include "cwallmanager.moc"

@@ -193,6 +193,9 @@
        <item>
         <widget class="QWidget" name="formWidgetCompetitor" native="true">
          <layout class="QFormLayout" name="formLayoutCompetitor">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
           <item row="1" column="0">
            <widget class="QLabel" name="labelCompetitorName">
             <property name="text">
@@ -216,28 +219,15 @@
             </property>
            </widget>
           </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="comboBoxCompetitorGender"/>
+          </item>
           <item row="3" column="0">
            <widget class="QLabel" name="labelCompetitorDob">
             <property name="text">
-             <string>Date of bethday</string>
-            </property>
-            <property name="buddy">
-             <cstring>dateEditCompetitorDob</cstring>
+             <string>Year of bethday</string>
             </property>
            </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QDateEdit" name="dateEditCompetitorDob">
-            <property name="displayFormat">
-             <string>M/d/yyyy</string>
-            </property>
-            <property name="calendarPopup">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QComboBox" name="comboBoxCompetitorGender"/>
           </item>
           <item row="4" column="0">
            <widget class="QLabel" name="labelCompetitorRange">
@@ -264,6 +254,9 @@
           </item>
           <item row="5" column="1">
            <widget class="QComboBox" name="comboBoxCompetitorTeam"/>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="spinBoxYear"/>
           </item>
          </layout>
         </widget>
@@ -637,7 +630,9 @@
   </action>
   <action name="actionCompetitorCommit">
    <property name="icon">
-    <iconset theme="document-save"/>
+    <iconset theme="document-save">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Commit</string>
@@ -648,7 +643,9 @@
   </action>
   <action name="actionComtetitorUpdate">
    <property name="icon">
-    <iconset theme="edit-undo"/>
+    <iconset theme="edit-undo">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Update</string>
@@ -659,7 +656,9 @@
   </action>
   <action name="actionCompetitorDelete">
    <property name="icon">
-    <iconset theme="edit-delete"/>
+    <iconset theme="edit-delete">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Delete</string>
@@ -672,7 +671,6 @@
  <tabstops>
   <tabstop>lineEditCompetitorName</tabstop>
   <tabstop>comboBoxCompetitorGender</tabstop>
-  <tabstop>dateEditCompetitorDob</tabstop>
   <tabstop>comboBoxCompetitorRange</tabstop>
   <tabstop>comboBoxCompetitorTeam</tabstop>
   <tabstop>pushButtonCompetitorAdd</tabstop>
@@ -1226,8 +1224,8 @@
    <slot>competitorUpdate()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>193</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>316</x>

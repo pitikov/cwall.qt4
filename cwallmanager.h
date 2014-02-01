@@ -54,6 +54,8 @@ public slots:
 	void configUpdate();
 	void db_auth_validate(int index);
 
+	void windowFullScreen(const bool& state);
+
 };
 
 #endif // CWALLMANAGER_H
