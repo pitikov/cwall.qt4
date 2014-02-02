@@ -27,7 +27,7 @@ public:
 protected:
 	virtual bool event(QEvent* event);
 	void setConnections();
-	QWidget *findSubWindow(QString objectName);
+	QMdiSubWindow *findSubWindow(QString objectName);
 
 	Ui::CWallManager 	*ui;
 	Ui::DialogAuth	*ui_auth;
@@ -55,7 +55,8 @@ public slots:
 	void db_auth_validate(int index);
 
 	void windowFullScreen(const bool& state);
-
+	void windowListChange();
+	void windowTabMode(const bool &state);
 };
 
 #endif // CWALLMANAGER_H

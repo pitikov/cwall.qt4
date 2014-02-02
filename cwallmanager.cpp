@@ -5,6 +5,8 @@
 
 #include <QCryptographicHash>
 
+#define TabMode
+
 CWallManager::CWallManager(QWidget* parent, Qt::WindowFlags flags)
 : QMainWindow(parent, flags)
 , ui(new Ui::CWallManager)
@@ -24,6 +26,8 @@ CWallManager::CWallManager(QWidget* parent, Qt::WindowFlags flags)
 	ui->actionManagerDbConnect->setChecked(DialogConfigure::cfg()->defaultDatabase(&host, &base, &user, &passwd, &port));
 	configUpdate();
 	ui->actionManagerDatabase->setDisabled(ui->actionManagerDbConnect->isChecked());
+
+	windowListChange();
 }
 
 void CWallManager::setConnections()
@@ -36,8 +40,15 @@ void CWallManager::setConnections()
 	connect(ui->actionLibrary_static_data, SIGNAL(activated()), this, SLOT(mdi_window_show()));
 	connect(ui->actionHelpRules, SIGNAL(activated()), this, SLOT(mdi_window_show()));
 
+	connect(ui->actionWindowCloseActive, SIGNAL(activated()), this, SLOT(windowListChange()));
+	connect(ui->actionWindowCloseAll, SIGNAL(activated()), this, SLOT(windowListChange()));
+	connect(ui->actionWindowNext, SIGNAL(activated()), this, SLOT(windowListChange()));
+	connect(ui->actionWindowPrevious, SIGNAL(activated()), this, SLOT(windowListChange()));
+
+
 	connect(dialogDatabase, SIGNAL(accepted()), this, SLOT(db_cfg_update()));
 	connect(DialogConfigure::cfg(), SIGNAL(accepted()), this, SLOT(configUpdate()));
+
 }
 
 bool CWallManager::event(QEvent* event)
@@ -143,21 +154,24 @@ void CWallManager::db_open_success()
 
 void CWallManager::mdi_window_show(bool status)
 {
+	QMdiSubWindow *tgt;
 	if (sender() == ui->actionLibrary_static_data ) {
-		QWidget *tgt = findSubWindow("FormLibraryEditor");
+		tgt = findSubWindow("FormLibraryEditor");
 		if ( !tgt ) ui->mdiArea->addSubWindow(new FormLibraryEditor(this))->show();
-		else tgt->showNormal();
+		else ui->mdiArea->setActiveSubWindow(tgt);
 	}
 
 	if (sender() == ui->actionHelpRules) {
-		QWidget *tgt = findSubWindow("FormRulesViewer");
+		tgt = findSubWindow("FormRulesViewer");
 		if ( !tgt ) ui->mdiArea->addSubWindow(new FormRulesViewer(this))->show();
-		else tgt->showNormal();
+		else ui->mdiArea->setActiveSubWindow(tgt);
 	}
 	// TODO in this point set recieving for add or delete subWindow to mdiArea
+
+	windowListChange();
 }
 
-QWidget *CWallManager::findSubWindow(QString objectName)
+QMdiSubWindow *CWallManager::findSubWindow(QString objectName)
 {
 	for (int id = 0; id < ui->mdiArea->subWindowList().count(); id++) {
 		if (ui->mdiArea->subWindowList().at(id)->widget()->objectName() == objectName)
@@ -185,6 +199,36 @@ void CWallManager::db_auth_validate(int index)
 void CWallManager::windowFullScreen(const bool& state)
 {
 	if (state) showFullScreen(); else showNormal();
+}
+
+void CWallManager::windowListChange()
+{
+	switch(ui->mdiArea->subWindowList().count()) {
+		case 0 :
+			ui->actionWindowCloseActive->setDisabled(true);
+			ui->actionWindowCloseAll->setDisabled(true);
+			ui->actionWindowNext->setDisabled(true);
+			ui->actionWindowPrevious->setDisabled(true);
+			break;
+		case 1 :
+			ui->actionWindowCloseActive->setEnabled(true);
+			ui->actionWindowCloseAll->setDisabled(true);
+			ui->actionWindowNext->setDisabled(true);
+			ui->actionWindowPrevious->setDisabled(true);
+			break;
+		default :
+			ui->actionWindowCloseActive->setEnabled(true);
+			ui->actionWindowCloseAll->setEnabled(true);
+			ui->actionWindowNext->setEnabled(true);
+			ui->actionWindowPrevious->setEnabled(true);
+			break;
+	}
+}
+
+void CWallManager::windowTabMode(const bool& state)
+{
+	ui->mdiArea->setViewMode(state?QMdiArea::TabbedView:QMdiArea::SubWindowView);
+	ui->mdiArea->setDocumentMode(state);
 }
 
 

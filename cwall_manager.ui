@@ -88,6 +88,7 @@
     <addaction name="actionWindowCloseActive"/>
     <addaction name="actionWindowCloseAll"/>
     <addaction name="separator"/>
+    <addaction name="actionWindowTabMode"/>
    </widget>
    <addaction name="menuManager"/>
    <addaction name="menuCompetition"/>
@@ -138,22 +139,26 @@
     <bool>false</bool>
    </attribute>
   </widget>
-	<widget class="QToolBar" name="toolBarWindow">
-		<property name="windowTitle">
-			<string>toolBar</string>
-		</property>
-		<attribute name="toolBarArea">
-			<enum>TopToolBarArea</enum>
-		</attribute>
-		<attribute name="toolBarBreak">
-			<bool>false</bool>
-		</attribute>
-		<addaction name="actionWindowFullScreen"/>
-		<addaction name="separator"/>
-		<addaction name="actionWindowPrevious"/>
-		<addaction name="actionWindowNext"/>
-		<addaction name="separator"/>
-	</widget>
+  <widget class="QToolBar" name="toolBarWindow">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionWindowFullScreen"/>
+   <addaction name="separator"/>
+   <addaction name="actionWindowPrevious"/>
+   <addaction name="actionWindowNext"/>
+   <addaction name="separator"/>
+   <addaction name="actionWindowCloseActive"/>
+   <addaction name="actionWindowCloseAll"/>
+   <addaction name="separator"/>
+   <addaction name="actionWindowTabMode"/>
+  </widget>
   <widget class="QToolBar" name="toolBarHelp">
    <property name="windowTitle">
     <string>Help</string>
@@ -305,23 +310,44 @@
    </property>
   </action>
   <action name="actionWindowPrevious">
+   <property name="icon">
+    <iconset theme="go-previous-view-page"/>
+   </property>
    <property name="text">
     <string>Previous window</string>
    </property>
   </action>
   <action name="actionWindowNext">
+   <property name="icon">
+    <iconset theme="go-next-view-page"/>
+   </property>
    <property name="text">
     <string>Next window</string>
    </property>
   </action>
   <action name="actionWindowCloseActive">
+   <property name="icon">
+    <iconset theme="tab-close"/>
+   </property>
    <property name="text">
     <string>Close active</string>
    </property>
+   <property name="toolTip">
+    <string>Close active window</string>
+   </property>
   </action>
   <action name="actionWindowCloseAll">
+   <property name="icon">
+    <iconset theme="tab-close-other"/>
+   </property>
    <property name="text">
     <string>Close all</string>
+   </property>
+   <property name="toolTip">
+    <string>Close all window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+W</string>
    </property>
   </action>
   <action name="actionWindowFullScreen">
@@ -329,7 +355,9 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="view-fullscreen"/>
+    <iconset theme="view-fullscreen">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Full screen</string>
@@ -339,6 +367,17 @@
    </property>
    <property name="autoRepeat">
     <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionWindowTabMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="tab-detach"/>
+   </property>
+   <property name="text">
+    <string>Tab mode</string>
    </property>
   </action>
  </widget>
@@ -376,8 +415,89 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionWindowCloseActive</sender>
+   <signal>activated()</signal>
+   <receiver>mdiArea</receiver>
+   <slot>closeActiveSubWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWindowCloseAll</sender>
+   <signal>activated()</signal>
+   <receiver>mdiArea</receiver>
+   <slot>closeAllSubWindows()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWindowNext</sender>
+   <signal>activated()</signal>
+   <receiver>mdiArea</receiver>
+   <slot>activateNextSubWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWindowPrevious</sender>
+   <signal>activated()</signal>
+   <receiver>mdiArea</receiver>
+   <slot>activatePreviousSubWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWindowTabMode</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>CWallManager</receiver>
+   <slot>windowTabMode(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>windowFullScreen(bool)</slot>
+  <slot>windowTabMode(bool)</slot>
  </slots>
 </ui>
