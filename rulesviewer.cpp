@@ -24,6 +24,13 @@ FormRulesViewer::FormRulesViewer(QWidget* parent, Qt::WindowFlags flags )
 	ui->spinBoxCurrentPage->setMaximum(Rules::sample()->doc()->numPages());
 
 	setWindowTitle(tr("Competition rules"));
+	
+	for (int id = 0; id< Rules::sample()->doc()->infoKeys().count(); id++) {
+		if (Rules::sample()->doc()->infoKeys().at(id) == "Title") {
+			if (Rules::sample()->doc()->info("Title").length() >= 3) setWindowTitle(Rules::sample()->doc()->info("Title"));
+		}
+	}
+
 
 	connect(ui->spinBoxCurrentPage, SIGNAL(valueChanged(int)), SLOT(setPage(int)));
 
